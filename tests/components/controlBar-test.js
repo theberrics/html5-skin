@@ -1,6 +1,7 @@
 jest.dontMock('../../js/components/controlBar')
     .dontMock('../../js/components/utils')
     .dontMock('../../js/components/icon')
+    .dontMock('../../js/components/logo')
     .dontMock('../../js/constants/constants')
     .dontMock('classnames');
 
@@ -26,7 +27,7 @@ describe('ControlBar', function () {
     };
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: skinConfig,
       duration: 30
@@ -36,7 +37,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
   });
 
@@ -63,7 +64,7 @@ describe('ControlBar', function () {
     fullscreenSkinConfig.buttons.desktopContent = [{"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: fullscreenSkinConfig
     };
@@ -72,7 +73,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     expect(fullscreenToggled).toBe(false);
@@ -99,7 +100,7 @@ describe('ControlBar', function () {
     oneButtonSkinConfig.buttons.desktopContent = [{"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -108,7 +109,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-control-bar-item');
@@ -139,7 +140,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -148,7 +149,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={1200}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-control-bar-item');
@@ -179,7 +180,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -188,7 +189,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var volumeButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-volume').firstChild;
@@ -222,7 +223,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -231,7 +232,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var playButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-play-pause').firstChild;
@@ -261,7 +262,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -270,7 +271,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var shareButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-share').firstChild;
@@ -301,7 +302,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -310,7 +311,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.END}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var discoveryButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-discovery').firstChild;
@@ -338,7 +339,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -347,13 +348,13 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var ccButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
     expect(ccButtons.length).toBe(0);
 
-    var ccClicked = false;
+    var toggleScreenClicked = false;
     mockController = {
       state: {
         isMobile: false,
@@ -365,11 +366,11 @@ describe('ControlBar', function () {
           availableBitrates: null
         }
       },
-      toggleClosedCaptionScreen: function() {ccClicked = true;}
+      toggleScreen: function() {toggleScreenClicked = true;}
     };
 
     mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -378,7 +379,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var ccButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-closed-caption');
@@ -386,7 +387,7 @@ describe('ControlBar', function () {
 
     var ccButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-closed-caption').firstChild;
     TestUtils.Simulate.click(ccButton);
-    expect(ccClicked).toBe(true);
+    expect(toggleScreenClicked).toBe(true);
   });
 
   it('shows/hides discovery button if discovery available', function() {
@@ -410,7 +411,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -419,7 +420,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var discoveryButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
@@ -442,7 +443,7 @@ describe('ControlBar', function () {
     };
 
     mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -451,7 +452,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var discoveryButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-discovery');
@@ -483,7 +484,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -492,7 +493,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var optionsButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-more-options');
@@ -510,7 +511,7 @@ describe('ControlBar', function () {
     ];
 
     mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -519,7 +520,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     optionsButton = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-more-options');
@@ -556,7 +557,7 @@ describe('ControlBar', function () {
       {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":35 }
     ];
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -565,7 +566,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var optionsButton = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-more-options');
@@ -595,7 +596,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -604,7 +605,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-control-bar-item');
@@ -631,7 +632,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: true}]},
+      isLiveStream: true,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -640,7 +641,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-live');
@@ -651,7 +652,7 @@ describe('ControlBar', function () {
     ];
 
     mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -660,7 +661,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     buttons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-live');
@@ -689,7 +690,7 @@ describe('ControlBar', function () {
     oneButtonSkinConfig.controlBar.iconStyle.inactive.color = "blue";
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -698,7 +699,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     expect(ReactDOM.findDOMNode(DOM.refs.volumeIcon).style.opacity).toBe("0");
@@ -730,7 +731,7 @@ describe('ControlBar', function () {
     oneButtonSkinConfig.buttons.desktopContent = [{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":100 }];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -739,7 +740,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
     var slider = TestUtils.findRenderedDOMComponentWithClass(DOM, "oo-volume-slider");
     expect(slider).not.toBe(null);
@@ -764,7 +765,7 @@ describe('ControlBar', function () {
     oneButtonSkinConfig.buttons.desktopContent = [{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":100 }];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -773,7 +774,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PAUSED}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     expect(DOM.refs.volumeIcon).toBe(undefined);
@@ -800,7 +801,7 @@ describe('ControlBar', function () {
     ];
 
     var mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig
     };
@@ -809,7 +810,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var qualityButtons = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
@@ -833,7 +834,7 @@ describe('ControlBar', function () {
 
     //xsmall
     mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
       responsiveView: skinConfig.responsive.breakpoints.xs.id
@@ -843,7 +844,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var qualityButtons2 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
@@ -855,7 +856,7 @@ describe('ControlBar', function () {
 
     //medium
     mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
       responsiveView: skinConfig.responsive.breakpoints.md.id
@@ -865,7 +866,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var qualityButtons3 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
@@ -877,7 +878,7 @@ describe('ControlBar', function () {
 
     //large
     mockProps = {
-      authorization: {streams: [{is_live_stream: false}]},
+      isLiveStream: false,
       controller: mockController,
       skinConfig: oneButtonSkinConfig,
       responsiveView: skinConfig.responsive.breakpoints.lg.id
@@ -887,7 +888,7 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={500}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
     var qualityButtons4 = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-quality');
@@ -898,7 +899,7 @@ describe('ControlBar', function () {
     expect(qualityClicked).toBe(true);
   });
 
-  it("renders nonclickable watermark", function() {
+  it("renders nonclickable logo", function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -914,9 +915,9 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"watermark", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
     ];
-    oneButtonSkinConfig.controlBar.watermark.clickUrl = false;
+    oneButtonSkinConfig.controlBar.logo.clickUrl = "";
 
     var mockProps = {
       controller: mockController,
@@ -927,15 +928,15 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
-    var watermark = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-watermark');
-    var nonClickableWatermark = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-non-clickable-watermark');
-    expect(nonClickableWatermark).not.toBe(null);
+    var logo = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-logo');
+    var nonClickableLogo = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
+    expect(nonClickableLogo.length).toBe(0);
   });
 
-  it("renders clickable watermark", function() {
+  it("renders clickable logo", function() {
     var mockController = {
       state: {
         isMobile: false,
@@ -951,9 +952,9 @@ describe('ControlBar', function () {
 
     var oneButtonSkinConfig = Utils.clone(skinConfig);
     oneButtonSkinConfig.buttons.desktopContent = [
-      {"name":"watermark", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
+      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":130 }
     ];
-    oneButtonSkinConfig.controlBar.watermark.clickUrl = true;
+    oneButtonSkinConfig.controlBar.logo.clickUrl = "http://www.ooyala.com";
 
     var mockProps = {
       controller: mockController,
@@ -964,13 +965,13 @@ describe('ControlBar', function () {
       <ControlBar {...mockProps} controlBarVisible={true}
         componentWidth={100}
         playerState={CONSTANTS.STATE.PLAYING}
-        authorization={mockProps.authorization} />
+        isLiveStream={mockProps.isLiveStream} />
     );
 
-    var nonClickableWatermark = TestUtils.scryRenderedDOMComponentsWithClass(DOM, 'oo-non-clickable-watermark');
-    expect(nonClickableWatermark.length).toBe(0);
+    var logo = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-logo');
+    var clickableLogo = TestUtils.scryRenderedDOMComponentsWithTag(DOM, 'a');
 
-    var watermark = TestUtils.findRenderedDOMComponentWithClass(DOM, 'oo-watermark');
-    TestUtils.Simulate.click(watermark);
+    expect(clickableLogo.length).toBe(1);
+    TestUtils.Simulate.click(logo);
   });
 });

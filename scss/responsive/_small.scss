@@ -1,11 +1,21 @@
 .oo-small {
+  // Control bar
+  .oo-control-bar-items-wrapper {
+    .oo-control-bar-item {
+      padding: 0 14.5px * $xsmall-multiple;
+      font-size: 23px;
+    }
+  }
 
+  //Action Icons
+    .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
+      font-size:86px;
+  }
+    
   // Discovery Screen
-  .oo-discovery-screen {
-    .oo-discovery-panel {
-      @include apply-to-safari-only ('.oo-scale-size') {
-        min-height: 190px !important;
-      }
+  .oo-discovery-panel {
+    @include apply-to-safari-only ('.oo-scale-size') {
+      min-height: 190px !important;
     }
   }
 
@@ -23,5 +33,4 @@
       }
     }
   }
-
 }
