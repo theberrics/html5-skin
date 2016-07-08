@@ -18,7 +18,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin_version = "<SKIN_VERSION>";
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.5.5", "rev": "<SKIN_REV>"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -51,6 +51,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "duration": 0,
       "mainVideoDuration": 0,
       "adVideoDuration": 0,
+      "adStartTime": 0,
       "elementId": null,
       "mainVideoContainer": null,
       "mainVideoInnerWrapper": null,
@@ -72,7 +73,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         "enabled": null,
         "language": null,
         "availableLanguages": null,
-        "cueText": null
+        "cueText": null,
+        "textColor": null,
+        "windowColor": null,
+        "backgroundColor": null,
+        "textOpacity": null,
+        "backgroundOpacity": null,
+        "windowOpacity": null,
+        "fontType": null,
+        "fontSize": null,
+        "textEnhancement": null
       },
 
       "videoQualityOptions": {
@@ -256,6 +266,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           videoWrapperClass: "innerWrapper",
           pluginsClass: "oo-player-skin-plugins"
         });
+
+        this.setupClosedCaptions();
       }, this));
 
       this.state.isMobile = Utils.isMobile();
@@ -325,9 +337,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onThumbnailsFetched: function (event, thumbnails) {
-      if (this.skin.props.skinConfig.controlBar.scrubberBar.thumbnailPreview) {
-        this.state.thumbnails = thumbnails;
-      }
+      this.state.thumbnails = thumbnails;
     },
 
     onAssetChanged: function (event, asset) {
@@ -628,6 +638,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.isPlayingAd = true;
         this.state.currentAdsInfo.currentAdItem = adItem;
         this.state.playerState = CONSTANTS.STATE.PLAYING;
+        if (adItem.isLive) {
+          this.state.adStartTime = new Date().getTime();
+        } else {
+          this.state.adStartTime = 0;
+        }
         this.skin.state.currentPlayhead = 0;
         this.state.mainVideoElement.removeClass('oo-blur');
         this.renderSkin();
@@ -768,16 +783,24 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onClosedCaptionsInfoAvailable: function(event, languages) {
       this.state.closedCaptionOptions.availableLanguages = languages;
+      this.setupClosedCaptions();
+    },
 
-      //Set the language to the skinConfig default if it is one of our possible languages, otherwise just set it to the first possible language.
-      if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
-        this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
-      } else if (languages && languages.languages && languages.languages.length > 0){
-        this.state.closedCaptionOptions.language = languages.languages[0];
-      }
+    setupClosedCaptions: function() {
+      if (!this.state.closedCaptionOptions.availableLanguages || !this.skin) return;
+      var languages = this.state.closedCaptionOptions.availableLanguages;
+      //Set the language to the skinConfig default if it is not already set or is not one of our possible languages.
+      //If that is not possible either, just set it to the first possible language.
+      if (this.state.closedCaptionOptions.language == null || !_.contains(languages.languages, this.state.closedCaptionOptions.language)) {
+        if (this.skin.props.skinConfig.closedCaptionOptions && _.contains(languages.languages, this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage)){
+          this.state.closedCaptionOptions.language = this.skin.props.skinConfig.closedCaptionOptions.defaultLanguage;
+        } else if (languages && languages.languages && languages.languages.length > 0){
+          this.state.closedCaptionOptions.language = languages.languages[0];
+        }
 
-      if (this.state.closedCaptionOptions.enabled){
-        this.setClosedCaptionsLanguage();
+        if (this.state.closedCaptionOptions.enabled){
+          this.setClosedCaptionsLanguage();
+        }
       }
     },
 
@@ -1173,6 +1196,51 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     onClosedCaptionLanguageChange: function(language) {
       this.state.closedCaptionOptions.language = language;
       this.setClosedCaptionsLanguage();
+      this.renderSkin();
+    },
+
+    onClosedCaptionTextColorChange: function(textColor) {
+      this.state.closedCaptionOptions.textColor = textColor;
+      this.renderSkin();
+    },
+
+    onClosedCaptionWindowColorChange: function(windowColor) {
+      this.state.closedCaptionOptions.windowColor = windowColor;
+      this.renderSkin();
+    },
+
+    onClosedCaptionBackgroundColorChange: function(backgroundColor) {
+      this.state.closedCaptionOptions.backgroundColor = backgroundColor;
+      this.renderSkin();
+    },
+
+    onClosedCaptionFontTypeChange: function(fontType) {
+      this.state.closedCaptionOptions.fontType = fontType;
+      this.renderSkin();
+    },
+
+    onClosedCaptionFontSizeChange: function(fontSize) {
+      this.state.closedCaptionOptions.fontSize = fontSize;
+      this.renderSkin();
+    },
+
+    onClosedCaptionTextOpacityChange: function(textOpacity) {
+      this.state.closedCaptionOptions.textOpacity = textOpacity;
+      this.renderSkin();
+    },
+
+    onClosedCaptionBackgroundOpacityChange: function(backgroundOpacity) {
+      this.state.closedCaptionOptions.backgroundOpacity = backgroundOpacity;
+      this.renderSkin();
+    },
+
+    onClosedCaptionWindowOpacityChange: function(windowOpacity) {
+      this.state.closedCaptionOptions.windowOpacity = windowOpacity;
+      this.renderSkin();
+    },
+
+    onClosedCaptionTextEnhancementChange: function(textEnhancement) {
+      this.state.closedCaptionOptions.textEnhancement = textEnhancement;
       this.renderSkin();
     },
 
