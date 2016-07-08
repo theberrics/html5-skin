@@ -43,8 +43,8 @@
       "color": "white",
       "opacity": 1
     },
-    "showTitle": true,
-    "showDescription": true,
+    "showTitle": false,
+    "showDescription": false,
     "titleFont": {
       "color": "white"
     },
