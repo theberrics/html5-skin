@@ -59,10 +59,12 @@
     opacity: 1;
     cursor: pointer;
   }
-}
 
-.oo-more-options-items.oo-animate-more-options {
-  top: 50%;
-  opacity: 1;
-  @include vendor-prefixes(transition, all 0.7s ease);
+  }
+
+  &.oo-animate-more-options {
+    top: 50%;
+    opacity: 1;
+    @include vendor-prefixes(transition, all 0.7s ease);
+  }
 }
