@@ -58,6 +58,9 @@
 
   // Skin
   @import "skin/default";
+
+  // Customizations
+  @import "customizations";
 }
 
 //override non-responsive css on debug.ooyala.com
