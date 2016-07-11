@@ -39,7 +39,8 @@ button.oo-close-button:hover {
 .oo-pause-screen {
 
     // remove fading underlay from pause screen
-    .oo-fading-underlay {
+    .oo-fading-underlay,
+    .oo-fading-underlay-active {
         display: none;
     }
 
@@ -102,14 +103,41 @@ button.oo-close-button:hover {
 
 }
  /* =====================================
-  * quality pop over
+  * video quality
   * ================================== */
+// SCREEN
+// POPOVER
 .oo-quality-popover {
 
     // style video quality popover
     background: $translucent-black-bg;
     border-radius: 0;
     box-shadow: none;
+
+    .oo-quality-screen-content {
+
+        ul {
+
+            li {
+
+                a.oo-quality-auto-btn {
+
+                    &.oo-selected {
+
+                        .oo-quality-auto-icon,
+                        .oo-quality-auto-label {
+                            color: #e31111;
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
 
 }
 /* =====================================
