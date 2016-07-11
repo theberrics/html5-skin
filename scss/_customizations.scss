@@ -122,8 +122,14 @@ button.oo-close-button:hover {
 
                 a.oo-quality-auto-btn {
 
+                    // remove auto quality button icon
+                    .oo-quality-auto-icon {
+                        display: none;
+                    }
+
                     &.oo-selected {
 
+                        // set auto quality button color
                         .oo-quality-auto-icon,
                         .oo-quality-auto-label {
                             color: #e31111;
