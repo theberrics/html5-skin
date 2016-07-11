@@ -1,6 +1,7 @@
 /* =====================================
  * VARIABLES
  * ================================== */
+$berrics-red: #e31111;
 $translucent-black-bg: rgba(0, 0, 0, 0.7);
 /* =====================================
  * general
@@ -120,19 +121,28 @@ button.oo-close-button:hover {
 
             li {
 
+                a.oo-quality-btn {
+
+                    // set selected quality text color
+                    &.oo-selected {
+                        color: $berrics-red;
+                    }
+
+                }
+
                 a.oo-quality-auto-btn {
 
-                    // remove auto quality button icon
+                    // remove auto quality text icon
                     .oo-quality-auto-icon {
                         display: none;
                     }
 
                     &.oo-selected {
 
-                        // set auto quality button color
+                        // set auto quality text color
                         .oo-quality-auto-icon,
                         .oo-quality-auto-label {
-                            color: #e31111;
+                            color: $berrics-red;
                         }
 
                     }
@@ -145,6 +155,23 @@ button.oo-close-button:hover {
 
     }
 
+}
+/* =====================================
+ * thumbnail
+ * ================================== */
+// style scrubber bar thumbnail
+.oo-thumbnail {
+    background-color: #000;
+    border: 1px solid #000;
+    border-radius: 0;
+    box-shadow: none;
+}
+// style scrubber bar thumbnail time stamp
+.oo-thumbnail-time {
+    background-color: $translucent-black-bg;
+    border-radius: 0;
+    padding-left: 4%;
+    padding-right: 4%;
 }
 /* =====================================
  * x-small
