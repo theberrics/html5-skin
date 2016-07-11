@@ -29,9 +29,27 @@ var playerEncodingPriority = {
 };
 var inlineSkinConfig = {
     'custom' : {
+        'controlBar' : {
+            'logo' : {
+                'imageResource' : {
+                    'url' : ''
+                },
+                'clickUrl' : '',
+                'target' : '',
+                'width' : 0,
+                'height' : 0
+            }
+        },
         'buttons' : {
             'desktopContent' : [
                 {},{},{},{},{},{},{},{},{},
+                {
+                    'name' : 'logo',
+                    'location' : 'void'
+                }
+            ],
+            'desktopAd' : [
+                {},{},{},
                 {
                     'name' : 'logo',
                     'location' : 'void'
@@ -76,7 +94,7 @@ var playerParams = {
     }
 };
 OO.ready(function() {
-    window.pp = OO.Player.create('container', 'xscnVtNDE6BjTQ1q5mn0P9WhaXgPEC11', playerParams);
+    window.pp = OO.Player.create('container', 'xiNmJvNDE6953MCHBvVmCg6ejKhvAOn-', playerParams);
 });
 </script>
 </body>
