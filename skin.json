@@ -61,8 +61,8 @@
       "color": "white",
       "opacity": 1
     },
-    "showTitle": true,
-    "showDescription": true,
+    "showTitle": false,
+    "showDescription": false,
     "infoPanelPosition": "topLeft",
     "screenToShowOnPause": "default"
   },
