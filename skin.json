@@ -157,7 +157,7 @@
         "opacity": 0.95
       }
     },
-    "autoHide": true,
+    "autoHide": false,
     "height": 60,
     "logo": {
       "imageResource": {"url": "//player.ooyala.com/static/v4/stable/latest/skin-plugin/assets/images/ooyala-logo.svg","androidResource" : "logo","iosResource" : "logo"},

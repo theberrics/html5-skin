@@ -40,3 +40,33 @@
     background: rgba(0, 0, 0, 0.7);
 
 }
+/* =====================================
+ * scrubber bar
+ * ================================== */
+.oo-scrubber-bar-container {
+
+    .oo-scrubber-bar-padding {
+        // make scubber bar appear "clickable"
+        cursor: pointer;
+
+        .oo-playhead-padding {
+
+            // style play head
+            .oo-playhead {
+                background: #fff;
+                border: 1px solid #000;
+                border-radius: 0;
+                height: 15px;
+                top: 43%;
+                width: 5px;
+            }
+
+            .oo-playhead-hovering {
+                top: 38%;
+            }
+
+        }
+
+    }
+
+}
