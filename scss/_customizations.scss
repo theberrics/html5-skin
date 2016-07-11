@@ -1,5 +1,22 @@
+/* =====================================
+ * state screen
+ * ================================== */
+.oo-state-screen {
+
+    // make selectable state screens appear "clickable"
+    .oo-state-screen-selectable {
+        cursor: pointer;
+    }
+
+}
+/* =====================================
+ * start screen
+ * ================================== */
 .oo-start-screen {
+
+    // remove linear-gradient from start screen proster image
     .oo-start-screen-linear-gradient {
         display: none;
     }
+
 }
