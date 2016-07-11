@@ -23,11 +23,20 @@
 /* =====================================
  * pause screen
  * ================================== */
- .oo-pause-screen {
+.oo-pause-screen {
 
-     // remove fading underlay from pause screen
+    // remove fading underlay from pause screen
     .oo-fading-underlay {
         display: none;
     }
 
- }
+}
+ /* =====================================
+  * control bar
+  * ================================== */
+.oo-control-bar {
+
+    // set transparent black background
+    background: rgba(0, 0, 0, 0.7);
+
+}
