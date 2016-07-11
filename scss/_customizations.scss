@@ -46,8 +46,16 @@
 .oo-scrubber-bar-container {
 
     .oo-scrubber-bar-padding {
-        // make scubber bar appear "clickable"
+        // make scubber bar area appear "clickable"
         cursor: pointer;
+
+        // remove rounded corners from scrubber bar
+        .oo-scrubber-bar,
+        .oo-buffered-indicator,
+        .oo-played-indicator,
+        .oo-hovered-indicator {
+            border-radius: 0;
+        }
 
         .oo-playhead-padding {
 
@@ -63,6 +71,31 @@
 
             .oo-playhead-hovering {
                 top: 38%;
+            }
+
+        }
+
+    }
+
+}
+/* =====================================
+ * x-small
+ * ================================== */
+.oo-xsmall {
+
+    .oo-scrubber-bar-container {
+
+        .oo-scrubber-bar-padding {
+
+            .oo-playhead-padding {
+
+                // style play head
+                .oo-playhead {
+                    border-radius: 0;
+                    height: 12px;
+                    width: 4px;
+                }
+
             }
 
         }
