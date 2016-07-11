@@ -28,7 +28,17 @@ var playerEncodingPriority = {
     'default' : ['hls', 'dash', 'mp4', 'hds', 'webm']
 };
 var inlineSkinConfig = {
-    'custom' : {},
+    'custom' : {
+        'buttons' : {
+            'desktopContent' : [
+                {},{},{},{},{},{},{},{},{},
+                {
+                    'name' : 'logo',
+                    'location' : 'void'
+                }
+            ]
+        }
+    },
     'none' : {}
 }
 var playerParams = {
@@ -39,7 +49,7 @@ var playerParams = {
     'preload' : true,
     'skin' : {
         'config' : playerSkinJSONConfig.custom,
-        'inline' : inlineSkinConfig.none
+        'inline' : inlineSkinConfig.custom
     },
     onCreate : function(player) {
 
