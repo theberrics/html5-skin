@@ -1,4 +1,17 @@
 /* =====================================
+ * VARIABLES
+ * ================================== */
+$translucent-black-bg: rgba(0, 0, 0, 0.7);
+/* =====================================
+ * general
+ * ================================== */
+// remove glow from buttons and icons
+[class^="oo-icon-"],
+[class*=" oo-icon-"],
+button.oo-close-button:hover {
+    filter: none !important;
+}
+/* =====================================
  * state screen
  * ================================== */
 .oo-state-screen {
@@ -37,7 +50,16 @@
 .oo-control-bar {
 
     // set transparent black background
-    background: rgba(0, 0, 0, 0.7);
+    background: $translucent-black-bg;
+
+    .oo-control-bar-items-wrapper {
+
+        // set color of selected control bar items
+        .oo-control-bar-item.oo-selected > span {
+            color: #fff !important;
+        }
+
+    }
 
 }
 /* =====================================
@@ -46,6 +68,7 @@
 .oo-scrubber-bar-container {
 
     .oo-scrubber-bar-padding {
+
         // make scubber bar area appear "clickable"
         cursor: pointer;
 
@@ -76,6 +99,17 @@
         }
 
     }
+
+}
+ /* =====================================
+  * quality pop over
+  * ================================== */
+.oo-quality-popover {
+
+    // style video quality popover
+    background: $translucent-black-bg;
+    border-radius: 0;
+    box-shadow: none;
 
 }
 /* =====================================
