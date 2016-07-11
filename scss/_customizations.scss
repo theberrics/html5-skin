@@ -20,3 +20,14 @@
     }
 
 }
+/* =====================================
+ * pause screen
+ * ================================== */
+ .oo-pause-screen {
+
+     // remove fading underlay from pause screen
+    .oo-fading-underlay {
+        display: none;
+    }
+
+ }
