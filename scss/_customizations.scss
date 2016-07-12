@@ -107,6 +107,48 @@ button.oo-close-button:hover {
   * video quality
   * ================================== */
 // SCREEN
+.oo-quality-panel {
+
+    .oo-quality-screen-content {
+
+        ul {
+
+            li {
+
+                a.oo-quality-btn {
+
+                    // set button border radius
+                    border-radius: 0;
+
+                    // set selected quality text color
+                    &.oo-selected {
+                        border-color: $berrics-red;
+                        color: $berrics-red;
+                    }
+
+                }
+
+                a.oo-quality-auto-btn {
+
+                    &.oo-selected {
+
+                        // set auto quality text color
+                        .oo-quality-auto-icon,
+                        .oo-quality-auto-label {
+                            color: $berrics-red;
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
 // POPOVER
 .oo-quality-popover {
 
