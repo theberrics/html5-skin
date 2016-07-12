@@ -1,14 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#3B5998;}
-	.st1{fill:#FFFFFF;}
-</style>
-<g>
-	<circle class="st0" cx="50" cy="50" r="47.6"/>
-	<path id="f_1_" class="st1" d="M54.7,79.8V52.1H64l1.4-10.8H54.7v-6.9c0-3.1,0.9-5.3,5.4-5.3l5.7,0v-9.7c-1-0.1-4.4-0.4-8.3-0.4
-		c-8.3,0-13.9,5-13.9,14.3v8h-9.3v10.8h9.3v27.7H54.7z"/>
-</g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>Page 1</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="5.24344571e-06 13.9944944 13.9944472 13.9944944 13.9944472 2.09737828e-05 5.24344571e-06 2.09737828e-05"></polygon>
+    </defs>
+    <g id="Social-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Facebook" transform="translate(-3.000000, -3.000000)">
+            <g id="Page-1" transform="translate(3.000000, 3.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-2"></g>
+                <path d="M13.2220876,2.09737828e-05 L0.772364794,2.09737828e-05 C0.345758052,2.09737828e-05 5.24344571e-06,0.345773783 5.24344571e-06,0.772380524 L5.24344571e-06,13.2221034 C5.24344571e-06,13.6486577 0.345758052,13.9945154 0.772364794,13.9945154 L7.47490412,13.9945154 L7.47490412,8.57509963 L5.65112884,8.57509963 L5.65112884,6.4630397 L7.47490412,6.4630397 L7.47490412,4.90547416 C7.47490412,3.09795356 8.57885918,2.11370637 10.1913236,2.11370637 C10.9637356,2.11370637 11.6275558,2.17117453 11.8209865,2.19686742 L11.8209865,4.08587116 L10.7026644,4.08639551 C9.82575056,4.08639551 9.65591536,4.50309213 9.65591536,5.11458277 L9.65591536,6.4630397 L11.7473685,6.4630397 L11.4750764,8.57509963 L9.65591536,8.57509963 L9.65591536,13.9945154 L13.2220876,13.9945154 C13.6486419,13.9945154 13.9944472,13.6486577 13.9944472,13.2221034 L13.9944472,0.772380524 C13.9944472,0.345773783 13.6486419,2.09737828e-05 13.2220876,2.09737828e-05" id="Fill-1" fill="#FFFFFF" mask="url(#mask-2)"></path>
+            </g>
+        </g>
+    </g>
 </svg>

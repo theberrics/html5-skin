@@ -51,6 +51,23 @@ button.oo-close-button:hover {
         display: none;
     }
 
+    // social icons on social share panel
+    .oo-facebook {
+        background-image: url("/build/assets/images/social-facebook.svg");
+    }
+
+    .oo-twitter {
+        background-image: url("/build/assets/images/social-twitter.svg");
+    }
+
+    .oo-google-plus {
+        display: none;
+    }
+
+    .oo-email-share {
+        display: none;
+    }
+
     // style embed code text area
     .oo-form-control {
 
