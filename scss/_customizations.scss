@@ -46,9 +46,20 @@ button.oo-close-button:hover {
     }
 
 }
- /* =====================================
-  * control bar
-  * ================================== */
+/* =====================================
+ * share panel
+ * ================================== */
+.oo-share-tab-panel {
+
+    // hide share panel action text "Invest In Social Change"
+    .oo-social-action-text {
+        display: none;
+    }
+
+}
+/* =====================================
+* control bar
+* ================================== */
 .oo-control-bar {
 
     // set transparent black background
@@ -65,8 +76,8 @@ button.oo-close-button:hover {
 
 }
 /* =====================================
- * scrubber bar
- * ================================== */
+* scrubber bar
+* ================================== */
 .oo-scrubber-bar-container {
 
     .oo-scrubber-bar-padding {
@@ -103,9 +114,9 @@ button.oo-close-button:hover {
     }
 
 }
- /* =====================================
-  * video quality
-  * ================================== */
+/* =====================================
+* video quality panel
+* ================================== */
 // SCREEN
 .oo-quality-panel {
 
@@ -242,6 +253,7 @@ button.oo-close-button:hover {
     // style scrubber bar thumbnail
     .oo-thumbnail {
         border-radius: 0;
+        box-shadow: none;
     }
 
     // style scrubber bar thumbnail time stamp
