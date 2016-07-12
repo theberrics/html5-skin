@@ -231,7 +231,15 @@ button.oo-close-button:hover {
  * ================================== */
 .oo-xsmall {
 
+    // set control bar height at xsmall
+    .oo-control-bar {
+        height: 77px;
+    }
+
     .oo-scrubber-bar-container {
+
+        // compensate for control bar height at xsmall
+        height: 34px;
 
         .oo-scrubber-bar-padding {
 
