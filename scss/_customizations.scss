@@ -1,9 +1,4 @@
 /* =====================================
- * VARIABLES
- * ================================== */
-$berrics-red: #e31111;
-$translucent-black-bg: rgba(0, 0, 0, 0.7);
-/* =====================================
  * general
  * ================================== */
 // remove glow from buttons and icons
@@ -63,13 +58,13 @@ button.oo-close-button:hover {
 .oo-control-bar {
 
     // set transparent black background
-    background: $translucent-black-bg;
+    background: $berrics-translucent-black-background;
 
     .oo-control-bar-items-wrapper {
 
         // set color of selected control bar items
         .oo-control-bar-item.oo-selected > span {
-            color: #fff !important;
+            color: $berrics-white !important;
         }
 
     }
@@ -97,8 +92,8 @@ button.oo-close-button:hover {
 
             // style play head
             .oo-playhead {
-                background: #fff;
-                border: 1px solid #000;
+                background: $berrics-white;
+                border: 1px solid $berrics-black;
                 border-radius: 0;
                 height: 15px;
                 top: 43%;
@@ -133,8 +128,8 @@ button.oo-close-button:hover {
 
                     // set selected quality text color
                     &.oo-selected {
-                        border-color: $berrics-red;
-                        color: $berrics-red;
+                        border-color: $berrics-accent-red;
+                        color: $berrics-accent-red;
                     }
 
                 }
@@ -146,7 +141,7 @@ button.oo-close-button:hover {
                         // set auto quality text color
                         .oo-quality-auto-icon,
                         .oo-quality-auto-label {
-                            color: $berrics-red;
+                            color: $berrics-accent-red;
                         }
 
                     }
@@ -164,7 +159,7 @@ button.oo-close-button:hover {
 .oo-quality-popover {
 
     // style video quality popover
-    background: $translucent-black-bg;
+    background: $berrics-translucent-black-background;
     border-radius: 0;
     box-shadow: none;
 
@@ -178,7 +173,7 @@ button.oo-close-button:hover {
 
                     // set selected quality text color
                     &.oo-selected {
-                        color: $berrics-red;
+                        color: $berrics-accent-red;
                     }
 
                 }
@@ -195,7 +190,7 @@ button.oo-close-button:hover {
                         // set auto quality text color
                         .oo-quality-auto-icon,
                         .oo-quality-auto-label {
-                            color: $berrics-red;
+                            color: $berrics-accent-red;
                         }
 
                     }
@@ -214,14 +209,14 @@ button.oo-close-button:hover {
  * ================================== */
 // style scrubber bar thumbnail
 .oo-thumbnail {
-    background-color: #000;
-    border: 1px solid #000;
+    background-color: $berrics-black;
+    border: 1px solid $berrics-black;
     border-radius: 0;
     box-shadow: none;
 }
 // style scrubber bar thumbnail time stamp
 .oo-thumbnail-time {
-    background-color: $translucent-black-bg;
+    background-color: $berrics-translucent-black-background;
     border-radius: 0;
     padding-left: 4%;
     padding-right: 4%;

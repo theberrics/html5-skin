@@ -1,14 +1,22 @@
 /* =====================================
- * VARIABLES
+ * SET VARIABLES
  * ================================== */
 $berrics-accent-red: #e31111;
 $berrics-font-stack: "Source Code Pro", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
 $berrics-translucent-black-background: rgba(0, 0, 0, 0.7);
+$berrics-black: #000;
+$berrics-white: #fff;
+/* =====================================
+ * colors
+ * ================================== */
+$blue-light: $berrics-accent-red;
+$brand-primary: $berrics-accent-red;
 /* =====================================
  * typography
  * ================================== */
-$font-family-roboto: #{$berrics-font-stack};
-$font-family-roboto-condensed: #{$berrics-font-stack};
-$font-family-roboto-bold: #{$berrics-font-stack};
-$font-family-roboto-condensed-bold: #{$berrics-font-stack};
-$font-family-verdana: #{$berrics-font-stack};
+$font-family-roboto: $berrics-font-stack;
+$font-family-roboto-condensed: $berrics-font-stack;
+$font-family-roboto-bold: $berrics-font-stack;
+$font-family-roboto-condensed-bold: $berrics-font-stack;
+$font-family-verdana: $berrics-font-stack;
+$font-family-base: $berrics-font-stack;
