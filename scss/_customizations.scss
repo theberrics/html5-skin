@@ -7,6 +7,10 @@
 button.oo-close-button:hover {
     filter: none !important;
 }
+[class^="oo-icon-"],
+[class*=" oo-icon-"] {
+    font-family: "the-berrics" !important;
+}
 /* =====================================
  * state screen
  * ================================== */
