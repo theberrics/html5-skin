@@ -239,4 +239,16 @@ button.oo-close-button:hover {
 
     }
 
+    // style scrubber bar thumbnail
+    .oo-thumbnail {
+        border-radius: 0;
+    }
+
+    // style scrubber bar thumbnail time stamp
+    .oo-thumbnail-time {
+        border-radius: 0;
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+
 }
