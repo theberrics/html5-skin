@@ -51,6 +51,21 @@ button.oo-close-button:hover {
         display: none;
     }
 
+    // style embed code text area
+    .oo-form-control {
+
+        background-color: $berrics-translucent-black-background;
+        border-color: $berrics-gray-dark;
+        border-radius: 0;
+        color: $berrics-white;
+
+        &:disabled,
+        &[readonly] {
+            background-color: $berrics-translucent-black-background;
+        }
+
+    }
+
 }
 /* =====================================
 * control bar
