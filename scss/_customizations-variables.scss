@@ -7,8 +7,17 @@ $berrics-translucent-black-background: rgba(0, 0, 0, 0.7);
 $berrics-black: #000;
 $berrics-white: #fff;
 $berrics-gray-dark: #333;
+//slider
 $slider-volume-width: 100px;
+$slider-volume-height: 3px;
+$slider-volume-thumb-diameter: 12px;
+$slider-volume-thumb-width: ($slider-volume-thumb-diameter/2) - 2;
+$slider-volume-thumb-color: #fff;
+$slider-volume-progress-color: #fff;
+$slider-volume-track-color: #999;
 $slider-volume-width-small: $slider-volume-width * $xsmall-multiple;
+$slider-volume-height-small: $slider-volume-height * $xsmall-multiple;
+$slider-volume-thumb-diameter-small: $slider-volume-thumb-diameter * $xsmall-multiple;
 /* =====================================
  * colors
  * ================================== */

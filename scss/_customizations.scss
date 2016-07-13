@@ -108,22 +108,6 @@ button.oo-close-button:hover {
     }
 
 }
-.oo-volume {
-
-    .oo-slider-volume {
-
-        border-bottom-width: 7px !important;
-        border-top-width: 8px !important;
-        cursor: pointer;
-        padding: 0;
-
-        &, &:focus {
-            outline: none !important;
-        }
-
-    }
-
-}
 /* =====================================
 * scrubber bar
 * ================================== */
@@ -158,6 +142,40 @@ button.oo-close-button:hover {
                 top: 38%;
             }
 
+        }
+
+    }
+
+}
+/* =====================================
+* slider (volume)
+* ================================== */
+.oo-volume {
+
+    // style volume slider
+    .oo-slider-volume[type=range] {
+
+        cursor: pointer;
+        border-top-width: 23px;
+        outline: none !important;
+        padding: 0;
+
+        &::-webkit-slider-thumb {
+            width: #{$slider-volume-thumb-width};
+            border: 1px solid #000;
+            border-radius: 0;
+        }
+
+        &::-moz-range-thumb {
+            width: #{$slider-volume-thumb-width};
+            border: 1px solid #000;
+            border-radius: 0;
+        }
+
+        &::-ms-thumb {
+            width: #{$slider-volume-thumb-width};
+            border: 1px solid #000;
+            border-radius: 0;
         }
 
     }
