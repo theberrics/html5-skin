@@ -9,7 +9,9 @@ button.oo-close-button:hover {
 }
 [class^="oo-icon-"],
 [class*=" oo-icon-"] {
-    font-family: "the-berrics" !important;
+    &:not(.oo-icon-system-menu) {
+        font-family: "the-berrics" !important;
+    }
 }
 /* =====================================
  * state screen
@@ -101,6 +103,22 @@ button.oo-close-button:hover {
         // set color of selected control bar items
         .oo-control-bar-item.oo-selected > span {
             color: $berrics-white !important;
+        }
+
+    }
+
+}
+.oo-volume {
+
+    .oo-slider-volume {
+
+        border-bottom-width: 7px !important;
+        border-top-width: 8px !important;
+        cursor: pointer;
+        padding: 0;
+
+        &, &:focus {
+            outline: none !important;
         }
 
     }

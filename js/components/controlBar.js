@@ -212,6 +212,8 @@ var ControlBar = React.createClass({
     else {
       volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
     }
+    this.props.controller.state.volumeState.volumeSliderVisible = true;
+    volumeControls = this.props.controller.state.volumeState.volumeSliderVisible ? volumeSlider : null;
 
     var playheadTime = isFinite(parseInt(this.props.currentPlayhead)) ? Utils.formatSeconds(parseInt(this.props.currentPlayhead)) : null;
     var isLiveStream = this.props.isLiveStream;
