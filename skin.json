@@ -160,11 +160,11 @@
     "autoHide": false,
     "height": 60,
     "logo": {
-      "imageResource": {"url": "//player.ooyala.com/static/v4/stable/latest/skin-plugin/assets/images/ooyala-logo.svg","androidResource" : "logo","iosResource" : "logo"},
-      "clickUrl": "http://www.ooyala.com",
-      "target": "_blank",
-      "width": 96,
-      "height": 24
+      "imageResource": {"url": "","androidResource" : "logo","iosResource" : "logo"},
+      "clickUrl": "",
+      "target": "",
+      "width": 0,
+      "height": 0
     },
     "adScrubberBar": {
       "backgroundColor": "rgba(175,175,175,1)",
@@ -189,10 +189,10 @@
       {"name":"flexibleSpace", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":1 },
       {"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":240 },
       {"name":"share", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
-      {"name":"discovery", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
+      {"name":"discovery", "location":"void", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
       {"name":"closedCaption", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
       {"name":"quality", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
-      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":125 },
+      {"name":"logo", "location":"void", "whenDoesNotFit":"keep", "minWidth":125 },
       {"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
       {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 }
     ],
@@ -200,7 +200,7 @@
       {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
       {"name":"flexibleSpace", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":1 },
       {"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":240 },
-      {"name":"logo", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":125 },
+      {"name":"logo", "location":"void", "whenDoesNotFit":"keep", "minWidth":125 },
       {"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
       {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 }
     ],
@@ -210,7 +210,7 @@
       {"name":"timeDuration", "location":"controlBar", "whenDoesNotFit":"drop", "minWidth":100 },
       {"name":"flexibleSpace", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":1 },
       {"name":"share", "location":"moreOptions" },
-      {"name":"discovery", "location":"moreOptions" },
+      {"name":"discovery", "location":"void" },
       {"name":"closedCaption", "location":"moreOptions" },
       {"name":"fullscreen", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":50 },
       {"name":"moreOptions", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":50 }

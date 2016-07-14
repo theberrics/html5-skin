@@ -28,47 +28,7 @@ var playerEncodingPriority = {
     'default' : ['hls', 'dash', 'mp4', 'hds', 'webm']
 };
 var inlineSkinConfig = {
-    'custom' : {
-        'controlBar' : {
-            'logo' : {
-                'imageResource' : {
-                    'url' : ''
-                },
-                'clickUrl' : '',
-                'target' : '',
-                'width' : 0,
-                'height' : 0
-            }
-        },
-        'buttons' : {
-            'desktopContent' : [
-                {},{},{},{},{},{},
-                {
-                    'name' : 'discovery',
-                    'location' : 'void'
-                },
-                {},{},
-                {
-                    'name' : 'logo',
-                    'location' : 'void'
-                }
-            ],
-            'desktopAd' : [
-                {},{},{},
-                {
-                    'name' : 'logo',
-                    'location' : 'void'
-                }
-            ],
-            'mobileContent' : [
-                {},{},{},{},{},
-                {
-                    'name' : 'discovery',
-                    'location' : 'void'
-                },
-            ]
-        }
-    },
+    'custom' : {},
     'none' : {}
 }
 var playerParams = {
@@ -79,7 +39,7 @@ var playerParams = {
     'preload' : true,
     'skin' : {
         'config' : playerSkinJSONConfig.custom,
-        'inline' : inlineSkinConfig.custom
+        'inline' : inlineSkinConfig.none
     },
     onCreate : function(player) {
 
