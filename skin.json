@@ -157,7 +157,7 @@
         "opacity": 0.95
       }
     },
-    "autoHide": false,
+    "autoHide": true,
     "height": 60,
     "logo": {
       "imageResource": {"url": "","androidResource" : "logo","iosResource" : "logo"},
