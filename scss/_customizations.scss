@@ -18,9 +18,33 @@ button.oo-close-button:hover {
  * ================================== */
 .oo-state-screen {
 
+    // add hover state to video player (part 1 of 2)
+    &:hover .oo-state-screen-poster:before {
+        background-color: rgba(0,0,0,.6);
+    }
+
     // make selectable state screens appear "clickable"
     .oo-state-screen-selectable {
         cursor: pointer;
+    }
+
+    // add hover state to video player (part 2 of 2)
+    .oo-state-screen-poster {
+
+        &:before {
+            background-color: rgba(0,0,0,0);
+            bottom: 0;
+            content: '';
+            height: 100%;
+            left: 0;
+            display: block;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: background-color .25s;
+            width: 100%;
+        }
+
     }
 
 }
