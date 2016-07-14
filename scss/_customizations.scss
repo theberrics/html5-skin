@@ -211,6 +211,24 @@ button.oo-close-button:hover {
 
 }
 /* =====================================
+* spinner
+* ================================== */
+.oo-spinner-wrapper {
+
+    // style loading spinner
+    background: url("/build/assets/images/loader_svg_bg.svg") center bottom no-repeat;
+    background-size: cover;
+    padding: 0 15px 18px 15px;
+
+    // adjust spin speed
+    .oo-spinner {
+      -webkit-animation-duration: 1.1s;
+      -moz-animation-duration: 1.1s;
+      animation-duration: 1.1s;
+    }
+
+}
+/* =====================================
 * video quality panel
 * ================================== */
 // SCREEN
