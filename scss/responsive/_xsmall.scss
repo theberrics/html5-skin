@@ -567,29 +567,25 @@
     padding-right: 10% * $xsmall-multiple;
     font-size: 18px * $xsmall-multiple;
   }
-<<<<<<< HEAD
+
+    .oo-thumbnail-carousel-center-image {
+      width: 124px;
+      height: 72px;
+      border-radius: 4px;
+    }
+
+    .oo-thumbnail-carousel-image {
+      position: absolute;
+      width: 73px;
+      height: 43px;
+      border-radius: 2px;
+    }
+
+    .oo-scrubber-thumbnail-container {
+      bottom: 70px;
+    }
+
+    .oo-scrubber-carousel-container {
+      bottom: 88px;
+    }
 }
-=======
-
-  .oo-thumbnail-carousel-center-image {
-    width: 124px;
-    height: 72px;
-    border-radius: 4px;
-  }
-
-  .oo-thumbnail-carousel-image {
-    position: absolute;
-    width: 73px;
-    height: 43px;
-    border-radius: 2px;
-  }
-
-  .oo-scrubber-thumbnail-container {
-    bottom: 70px;
-  }
-
-  .oo-scrubber-carousel-container {
-    bottom: 88px;
-  }
-}
->>>>>>> upstream/stable

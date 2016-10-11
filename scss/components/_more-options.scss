@@ -12,7 +12,6 @@
   @include vendor-prefixes(user-select, none);
   font-size: 30px;
 
-<<<<<<< HEAD
   .oo-more-options-panel {
     @extend .oo-expand;
     background: $panel-bg;
@@ -43,10 +42,11 @@
       }
     }
 
+  }
+
   button.oo-control-bar-item {
-=======
+
   a.oo-control-bar-item {
->>>>>>> upstream/stable
     background-color: transparent;
     border:0;
     outline: none;
