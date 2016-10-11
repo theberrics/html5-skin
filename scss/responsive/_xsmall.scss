@@ -237,6 +237,20 @@
   }
 
   //Ad Panel
+  .oo-ad-screen {
+    .oo-action-icon-pause {
+      display:none;
+    }
+  }
+
+  //Share Panel
+  .oo-share-panel {
+    .oo-embed-form {
+      height: calc(8vh);
+      margin: 12px 0px;
+    }
+  }
+
   .oo-ad-top-bar {
      height: 17px;
 
@@ -306,7 +320,7 @@
 
   //Control Bar
   .oo-control-bar {
-    height: $control-bar-height-small;
+    height: $control-bar-height-small !important;
     font-size: 25px * $xsmall-multiple;
 
     .oo-control-bar-items-wrapper {
@@ -372,10 +386,6 @@
 
     .oo-scrubber-bar-padding {
       .oo-scrubber-bar {
-        height: 4px * $xsmall-multiple;
-      }
-
-      .oo-scrubber-bar-hover {
         height: 6px * $xsmall-multiple;
       }
 
@@ -384,14 +394,14 @@
         height: 25px * $xsmall-multiple;
 
         .oo-playhead {
-          width: 7px;
-          height: 7px;
-          border-width: 1px * $xsmall-multiple;
+          width: 9px;
+          height: 9px;
+          border-width: 2px * $xsmall-multiple;
           border-radius: 10px * $xsmall-multiple;
         }
         .oo-playhead-scrubbing {
-          width: 13px * $xsmall-multiple;
-          height: 13px * $xsmall-multiple;
+          width: 14px * $xsmall-multiple;
+          height: 14px * $xsmall-multiple;
         }
 
         .oo-playhead-hovering {
@@ -557,4 +567,29 @@
     padding-right: 10% * $xsmall-multiple;
     font-size: 18px * $xsmall-multiple;
   }
+<<<<<<< HEAD
 }
+=======
+
+  .oo-thumbnail-carousel-center-image {
+    width: 124px;
+    height: 72px;
+    border-radius: 4px;
+  }
+
+  .oo-thumbnail-carousel-image {
+    position: absolute;
+    width: 73px;
+    height: 43px;
+    border-radius: 2px;
+  }
+
+  .oo-scrubber-thumbnail-container {
+    bottom: 70px;
+  }
+
+  .oo-scrubber-carousel-container {
+    bottom: 88px;
+  }
+}
+>>>>>>> upstream/stable

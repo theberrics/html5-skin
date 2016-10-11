@@ -120,6 +120,16 @@ var Utils = {
   },
 
   /**
+   * Check if the current browser is Chrome
+   *
+   * @function isChrome
+   * @returns {Boolean} Whether the browser is Chrome or not
+   */
+  isChrome: function () {
+    return (!!window.navigator.userAgent.match(/Chrome/) && !!window.navigator.vendor.match(/Google Inc/));
+  },
+
+  /**
   * Check if the current browser is Edge
   *
   * @function isEdge
@@ -301,14 +311,52 @@ var Utils = {
     return r;
   },
 
-  reformatAspectRatio: function (aspectRatio) {
-    var aspectRatioArray = aspectRatio.split(':');
-    var vidWidth = aspectRatioArray[0];
-    var vidHeight = aspectRatioArray[1];
-    var dimensions = {};
-    dimensions["width"] = vidWidth;
-    dimensions["height"] = vidHeight;
-    return dimensions;
+  /**
+  * Find thumbnail image URL and its index that correspond to given time value
+  *
+  * @function findThumbnail
+  * @param {Object} thumbnails - metadata object containing information about thumbnails
+  * @param {Number} hoverTime - time value to find thumbnail for
+  * @param {Number} duration - duration of the video
+  * @returns {Object} object that contains URL and index of requested thumbnail
+  */
+  findThumbnail: function(thumbnails, hoverTime, duration) {
+    var timeSlices = thumbnails.data.available_time_slices;
+    var width = thumbnails.data.available_widths[0]; //choosing the lowest size
+
+    var position = Math.floor((hoverTime/duration) * timeSlices.length);
+    position = Math.min(position, timeSlices.length - 1);
+    position = Math.max(position, 0);
+
+    var selectedTimeSlice = null;
+    var selectedPosition = position;
+
+    if (timeSlices[position] >= hoverTime) {
+      selectedTimeSlice = timeSlices[0];
+      for (var i = position; i >= 0; i--) {
+        if (timeSlices[i] <= hoverTime) {
+          selectedTimeSlice = timeSlices[i];
+          selectedPosition = i;
+          break;
+        }
+      }
+    } else {
+      selectedTimeSlice = timeSlices[timeSlices.length - 1];
+      for (var i = position; i < timeSlices.length; i++) {
+        if (timeSlices[i] == hoverTime) {
+          selectedTimeSlice = timeSlices[i];
+          selectedPosition = i;
+          break;
+        } else if (timeSlices[i] > hoverTime) {
+          selectedTimeSlice = timeSlices[i - 1];
+          selectedPosition = i - 1;
+          break;
+        }
+      }
+    }
+
+    var selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
+    return { url: selectedThumbnail, pos: selectedPosition };
   },
 
   /**
@@ -371,10 +419,7 @@ var Utils = {
       }
     }
     return usedWidth;
-  },
-
-  _isOverflow: function( item ) {
-    return item.whenDoesNotFit && item.whenDoesNotFit == "moveToMoreOptions";
   }
 };
+
 module.exports = Utils;

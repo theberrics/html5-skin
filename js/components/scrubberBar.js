@@ -5,6 +5,7 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     ResizeMixin = require('../mixins/resizeMixin'),
     Thumbnail = require('./thumbnail'),
+    ThumbnailCarousel = require('./thumbnailCarousel'),
     CONSTANTS = require('../constants/constants');
 
 var ScrubberBar = React.createClass({
@@ -12,6 +13,7 @@ var ScrubberBar = React.createClass({
 
   getInitialState: function() {
     this.lastScrubX = null;
+    this.isMobile = this.props.controller.state.isMobile;
     this.touchInitiated = false;
 
     return {
@@ -35,7 +37,7 @@ var ScrubberBar = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if (this.transitionedDuringSeek && !nextProps.seeking) {
+    if (this.state.transitionedDuringSeek && !nextProps.seeking) {
       this.setState({transitionedDuringSeek: false});
     }
   },
@@ -66,6 +68,9 @@ var ScrubberBar = React.createClass({
   handlePlayheadMouseDown: function(evt) {
     if (this.props.controller.state.screenToShow == CONSTANTS.SCREEN.AD_SCREEN) return;
     this.props.controller.startHideControlBarTimer();
+    if (evt.target.className.match("playhead") && evt.type !== "mousedown") {
+        this.touchInitiated = true;
+    }
     if ((this.touchInitiated && evt.type !== "mousedown") || (!this.touchInitiated && evt.type === "mousedown") ){
       //since mobile would fire both click and touched events,
       //we need to make sure only one actually does the work
@@ -154,7 +159,7 @@ var ScrubberBar = React.createClass({
       offsetX = evt.targetTouches[0].pageX - evt.target.getBoundingClientRect().left;
     }
     else {
-      offsetX = evt.nativeEvent.offsetX;
+      offsetX = evt.nativeEvent.offsetX == undefined ? evt.nativeEvent.layerX : evt.nativeEvent.offsetX;
     }
 
     this.setState({
@@ -191,7 +196,7 @@ var ScrubberBar = React.createClass({
       backgroundColor: this.props.skinConfig.controlBar.scrubberBar.backgroundColor
     };
     var bufferedIndicatorStyle = {
-      width: (parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100 + "%",
+      width: Math.min((parseFloat(this.props.buffered) / parseFloat(this.props.duration)) * 100, 100) + "%",
       backgroundColor: this.props.skinConfig.controlBar.scrubberBar.bufferedColor
     };
     var playedIndicatorStyle = {
@@ -238,41 +243,52 @@ var ScrubberBar = React.createClass({
     }
 
     var thumbnailContainer = null;
+    var thumbnailCarousel = null;
+    var hoverTime = 0;
+    var hoverPosition = 0;
+    var hoveredIndicatorStyle = null;
+
     if (this.props.controller.state.thumbnails && (this.state.scrubbingPlayheadX || this.lastScrubX || this.state.hoveringX)) {
       if (this.state.scrubbingPlayheadX) {
-        var hoverPosition = this.state.scrubbingPlayheadX;
-        var hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
+        hoverPosition = this.state.scrubbingPlayheadX;
+        hoverTime = (this.state.scrubbingPlayheadX / this.state.scrubberBarWidth) * this.props.duration;
         playheadClassName += " oo-playhead-scrubbing";
-      }
-      else if (this.lastScrubX) {//to show thumbnail when clicking on playhead
-        var hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
-        var hoverTime = this.props.currentPlayhead;
+
+        thumbnailCarousel =
+          <ThumbnailCarousel
+           thumbnails={this.props.controller.state.thumbnails}
+           duration={this.props.duration}
+           hoverTime={hoverTime > 0 ? hoverTime : 0}
+           scrubberBarWidth={this.state.scrubberBarWidth}/>
+      } else if (this.lastScrubX) {//to show thumbnail when clicking on playhead
+        hoverPosition = this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration;
+        hoverTime = this.props.currentPlayhead;
         playheadClassName += " oo-playhead-scrubbing";
-      }
-      else if (this.state.hoveringX) {
-        var hoverPosition = this.state.hoveringX;
-        var hoverTime=(this.state.hoveringX / this.state.scrubberBarWidth) * this.props.duration;
-        var hoveredIndicatorStyle = {
-              width: Math.min((parseFloat(hoverTime) / parseFloat(this.props.duration)) * 100, 100) + "%",
-              backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
-            };
+      } else if (this.state.hoveringX) {
+        hoverPosition = this.state.hoveringX;
+        hoverTime = (this.state.hoveringX / this.state.scrubberBarWidth) * this.props.duration;
+        hoveredIndicatorStyle = {
+          width: Math.min((parseFloat(hoverTime) / parseFloat(this.props.duration)) * 100, 100) + "%",
+          backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
+        };
         scrubberBarClassName += " oo-scrubber-bar-hover";
         playheadClassName += " oo-playhead-hovering";
       }
-      thumbnailContainer =
-        (<div className="oo-scrubber-thumbnail-container">
+      if (!thumbnailCarousel) {
+        thumbnailContainer = (
           <Thumbnail
-            thumbnails={this.props.controller.state.thumbnails}
-            hoverPosition={hoverPosition}
-            duration={this.props.duration}
-            hoverTime={hoverTime > 0 ? hoverTime : 0}
-            scrubberBarWidth={this.state.scrubberBarWidth}/>
-        </div>);
+           thumbnails={this.props.controller.state.thumbnails}
+           hoverPosition={hoverPosition}
+           duration={this.props.duration}
+           hoverTime={hoverTime > 0 ? hoverTime : 0} />
+        )
+      }
     }
 
     return (
       <div className="oo-scrubber-bar-container" ref="scrubberBarContainer" onMouseOver={scrubberBarMouseOver} onMouseOut={scrubberBarMouseOut} onMouseMove={scrubberBarMouseMove}>
         {thumbnailContainer}
+        {thumbnailCarousel}
         <div className="oo-scrubber-bar-padding" ref="scrubberBarPadding" onMouseDown={scrubberBarMouseDown} onTouchStart={scrubberBarMouseDown}>
           <div ref="scrubberBar" className={scrubberBarClassName} style={scrubberBarStyle}>
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle}></div>

@@ -97,7 +97,6 @@ module.exports = {
   },
 
   UI: {
-    defaultControlBarHeight: 90,
     defaultScrubberBarHeight: 4,
     DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING: 15
   },
@@ -110,6 +109,11 @@ module.exports = {
 
   PAUSE_REASON: {
     TRANSITION: "transition"
+  },
+
+  MEDIA_TYPE: {
+    HTML5: "html5",
+    FLASH: "flash"
   },
 
   ERROR_MESSAGE: {
@@ -262,4 +266,4 @@ module.exports = {
       description: "Something happened while we were trying to play your video! Click replay or simply reload your page."
     }
   }
-}
+};

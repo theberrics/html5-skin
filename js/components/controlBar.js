@@ -8,7 +8,9 @@ var React = require('react'),
     ScrubberBar = require('./scrubberBar'),
     Slider = require('./slider'),
     Utils = require('./utils'),
-    VideoQualityPopover = require('./videoQualityPopover'),
+    Popover = require('../views/popover'),
+    VideoQualityPanel = require('./videoQualityPanel'),
+    ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
     Logo = require('./logo');
     Icon = require('./icon');
 
@@ -20,9 +22,12 @@ var ControlBar = React.createClass({
     this.moreOptionsItems = null;
 
     return {
-      currentVolumeHead: 0,
-      showVideoQualityPopover: false
+      currentVolumeHead: 0
     };
+  },
+
+  componentDidMount: function() {
+    window.addEventListener('orientationchange', this.closePopovers);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -34,9 +39,11 @@ var ControlBar = React.createClass({
 
   componentWillUnmount: function () {
     this.props.controller.cancelTimer();
+    this.closePopovers();
     if (Utils.isAndroid()){
       this.props.controller.hideVolumeSliderBar();
     }
+    window.removeEventListener('orientationchange', this.closePopovers);
   },
 
   getResponsiveUIMultiple: function(responsiveView){
@@ -67,6 +74,7 @@ var ControlBar = React.createClass({
     evt.stopPropagation();
     evt.cancelBubble = true;
     evt.preventDefault();
+    this.props.controller.onLiveClick();
     this.props.controller.seek(this.props.duration);
   },
 
@@ -100,13 +108,33 @@ var ControlBar = React.createClass({
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
     } else {
       this.toggleQualityPopover();
+      this.closeCaptionPopover();
     }
   },
 
   toggleQualityPopover: function() {
-    this.setState({
-      showVideoQualityPopover: !this.state.showVideoQualityPopover
-    });
+    this.props.controller.toggleVideoQualityPopOver();
+  },
+
+  closeQualityPopover: function() {
+    if(this.props.controller.state.videoQualityOptions.showVideoQualityPopover == true) {
+      this.toggleQualityPopover();
+    }
+  },
+
+  toggleCaptionPopover: function() {
+    this.props.controller.toggleClosedCaptionPopOver();
+  },
+
+  closeCaptionPopover: function() {
+    if(this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover == true) {
+      this.toggleCaptionPopover();
+    }
+  },
+
+  closePopovers: function() {
+    this.closeCaptionPopover();
+    this.closeQualityPopover();
   },
 
   handleVolumeClick: function(evt) {
@@ -124,7 +152,12 @@ var ControlBar = React.createClass({
   },
 
   handleClosedCaptionClick: function() {
-    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+    if(this.props.responsiveView == this.props.skinConfig.responsive.breakpoints.xs.id) {
+      this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSEDCAPTION_SCREEN);
+    } else {
+      this.toggleCaptionPopover();
+      this.closeQualityPopover();
+    }
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
@@ -193,7 +226,9 @@ var ControlBar = React.createClass({
         "oo-volume-bar": true,
         "oo-on": turnedOn
       });
+      var barStyle = turnedOn ? {backgroundColor: this.props.skinConfig.controlBar.volumeControl.color} : null;
       volumeBars.push(<a data-volume={(i+1)/10} className={volumeClass} key={i}
+        style={barStyle}
         onClick={this.handleVolumeClick}></a>);
     }
 
@@ -231,27 +266,34 @@ var ControlBar = React.createClass({
         "oo-live-nonclickable": isLiveNow
       });
 
-    var videoQualityPopover = this.state.showVideoQualityPopover ? <VideoQualityPopover {...this.props} togglePopoverAction={this.toggleQualityPopover}/> : null;
+    var videoQualityPopover = this.props.controller.state.videoQualityOptions.showVideoQualityPopover ? <Popover><VideoQualityPanel{...this.props} togglePopoverAction={this.toggleQualityPopover} popover={true}/></Popover> : null;
+    var closedCaptionPopover = this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover ? <Popover popoverClassName="oo-popover oo-popover-pull-right"><ClosedCaptionPopover {...this.props} togglePopoverAction={this.toggleCaptionPopover}/></Popover> : null;
 
     var qualityClass = ClassNames({
       "oo-quality": true,
       "oo-control-bar-item": true,
-      "oo-selected": this.state.showVideoQualityPopover
+      "oo-selected": this.props.controller.state.videoQualityOptions.showVideoQualityPopover
+    });
+
+    var captionClass = ClassNames({
+      "oo-closed-caption": true,
+      "oo-control-bar-item": true,
+      "oo-selected": this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover
     });
 
     var controlItemTemplates = {
-      "playPause": <button className="oo-play-pause oo-control-bar-item" onClick={this.handlePlayClick} key="playPause">
+      "playPause": <a className="oo-play-pause oo-control-bar-item" onClick={this.handlePlayClick} key="playPause">
         <Icon {...this.props} icon={playIcon}
           style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
-      "live": <button className={liveClass}
+      "live": <a className={liveClass}
           ref="LiveButton"
           onClick={liveClick} key="live">
         <div className="oo-live-circle"></div>
         <span className="oo-live-text">{liveText}</span>
-      </button>,
+      </a>,
 
       "volume": <div className="oo-volume oo-control-bar-item" key="volume">
         <Icon {...this.props} icon={volumeIcon} ref="volumeIcon"
@@ -261,51 +303,55 @@ var ControlBar = React.createClass({
         {volumeControls}
       </div>,
 
-      "timeDuration": <div className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
+      "timeDuration": <a className="oo-time-duration oo-control-bar-duration" style={durationSetting} key="timeDuration">
         <span>{playheadTimeContent}</span>{totalTimeContent}
-      </div>,
+      </a>,
 
       "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
 
-      "moreOptions": <button className="oo-more-options oo-control-bar-item"
+      "moreOptions": <a className="oo-more-options oo-control-bar-item"
         onClick={this.handleMoreOptionsClick} key="moreOptions">
         <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
       "quality": (
         <div className="oo-popover-button-container" key="quality">
           {videoQualityPopover}
-          <button className={qualityClass} onClick={this.handleQualityClick}>
+          <a className={qualityClass} onClick={this.handleQualityClick}>
             <Icon {...this.props} icon="quality" style={dynamicStyles.iconCharacter}
               onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-          </button>
+          </a>
         </div>
       ),
 
-      "discovery": <button className="oo-discovery oo-control-bar-item"
+      "discovery": <a className="oo-discovery oo-control-bar-item"
         onClick={this.handleDiscoveryClick} key="discovery">
         <Icon {...this.props} icon="discovery" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
-      "closedCaption": <button className="oo-closed-caption oo-control-bar-item"
-        onClick={this.handleClosedCaptionClick} key="closedCaption">
-        <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      "closedCaption": (
+        <div className="oo-popover-button-container" key="closedCaption">
+          {closedCaptionPopover}
+          <a className={captionClass} onClick={this.handleClosedCaptionClick}>
+            <Icon {...this.props} icon="cc" style={dynamicStyles.iconCharacter}
+              onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+          </a>
+        </div>
+      ),
 
-      "share": <button className="oo-share oo-control-bar-item"
+      "share": <a className="oo-share oo-control-bar-item"
         onClick={this.handleShareClick} key="share">
         <Icon {...this.props} icon="share" style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
-      "fullscreen": <button className="oo-fullscreen oo-control-bar-item"
+      "fullscreen": <a className="oo-fullscreen oo-control-bar-item"
         onClick={this.handleFullscreenClick} key="fullscreen">
         <Icon {...this.props} icon={fullscreenIcon} style={dynamicStyles.iconCharacter}
           onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </button>,
+      </a>,
 
       "logo": <Logo key="logo" imageUrl={this.props.skinConfig.controlBar.logo.imageResource.url}
                     clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
@@ -419,8 +465,12 @@ var ControlBar = React.createClass({
 
     var controlBarItems = this.populateControlBar();
 
+    var controlBarStyle = {
+      height: this.props.skinConfig.controlBar.height
+    };
+
     return (
-      <div className={controlBarClass} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
+      <div className={controlBarClass} style={controlBarStyle} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
         <ScrubberBar {...this.props} />
 
         <div className="oo-control-bar-items-wrapper">
