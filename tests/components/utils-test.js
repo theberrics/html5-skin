@@ -5,6 +5,9 @@ jest.dontMock('../../config/skin');
 var Utils = require('../../js/components/utils');
 var DeepMerge = require('deepmerge');
 var SkinJSON = require('../../config/skin');
+OO = {
+  log: function(a) {console.info(a);}
+};
 
 describe('Utils', function () {
   it('tests the utility functions', function () {
@@ -113,19 +116,19 @@ describe('Utils', function () {
         availableLanguageFile: [
           {
             "language": "en",
-            "languageFile": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/en.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/en.json",
             "androidResource": "skin-config/en.json",
             "iosResource": "en"
           },
           {
             "language": "es",
-            "languageFile": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/es.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/es.json",
             "androidResource": "skin-config/es.json",
             "iosResource": "es"
           },
           {
             "language": "zh",
-            "languageFile": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/zh.json",
+            "languageFile": "//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/zh.json",
             "androidResource": "skin-config/zh.json",
             "iosResource": "zh"
           }
@@ -235,6 +238,42 @@ describe('Utils', function () {
     src = 'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/3Gduepif0T1UGY8H4xMDoxOmFkOxyVqc';
     isValidString = Utils.isValidString(src);
     expect(isValidString).toBeTruthy();
+  });
+
+  it('tests sanitizeConfigData', function () {
+    var data = null;
+    var sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toEqual({});
+
+    data = '';
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toEqual({});
+
+    data = undefined;
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toEqual({});
+
+    data = [];
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toEqual({});
+
+    data = [1, 2, 3];
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toEqual({});
+
+    data = 'inline: {data: 2}';
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toBe(data);
+
+    data = 10;
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toBe(data);
+
+    data = {skin: {config: "v4"}};
+    sanitizedConfigData = Utils.sanitizeConfigData(data);
+    expect(sanitizedConfigData).toBeTruthy();
+    expect(sanitizedConfigData.skin).toBeTruthy();
+    expect(sanitizedConfigData.skin.config).toBe("v4");
   });
 
   it('tests deep merge', function () {

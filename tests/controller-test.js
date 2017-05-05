@@ -4,6 +4,8 @@ jest.dontMock('../js/constants/constants');
 jest.dontMock('../js/components/utils');
 jest.dontMock('../config/skin');
 jest.dontMock('deepmerge');
+jest.dontMock('underscore');
+jest.dontMock('jquery');
 
 var CONSTANTS = require('../js/constants/constants');
 
@@ -57,6 +59,7 @@ OO = {
         },
         isPlaybackReadySubscribed: false,
         configLoaded: true,
+        attributes: {},
         elementId: 'oo-video',
         isLiveStream: false,
         contentTree: {},
@@ -205,7 +208,8 @@ OO = {
       setAspectRatio: function() {window.isAspectRatioSet = true;},
       createPluginElements: function() {},
       findMainVideoElement: function(a) {},
-      loadConfigData: function(a, b, c, d) {}
+      loadConfigData: function(a, b, c, d) {},
+      cleanUpEventListeners: function(){}
     };
 
 
@@ -239,7 +243,11 @@ OO = {
     var tempSkin = controllerMock.skin;
     Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', elementId, {skin:{config:{}}}, persistentSettings);
     Html5Skin.onSkinMetaDataFetched.call(controllerMock, 'customerUi', {});
+    Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', {"attributes":{"provider":{"ots_stretch_to_output":"true"}}});
     Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{config:{}}}, {}, {}, {});
+    Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{config:[]}}, {}, {}, {}); //invalid
+    Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{inline:{}}}, {}, {}, {});
+    Html5Skin.loadConfigData.call(controllerMock, 'customerUi', {skin:{inline:[]}}, {}, {}, {}); //invalid
     Html5Skin.createPluginElements.call(controllerMock);
     controllerMock.skin = tempSkin; //reset skin, onPlayerCreated updates skin
 
@@ -458,17 +466,21 @@ OO = {
     Html5Skin.sendVideoQualityChangeEvent.call(controllerMock, {id:2});
     Html5Skin.setClosedCaptionsInfo.call(controllerMock, elementId);
 
+    controllerMock.state.closedCaptionOptions.availableLanguages = {languages: ["en", "es", "de", "cs"]};
+    Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'de'); //valid language test
+    window.closedCaptionLanguage1 = controllerMock.state.closedCaptionOptions.language;
+    Html5Skin.onChangeClosedCaptionLanguage.call(controllerMock, 'changeClosedCaptionLanguage', 'sderfes'); //invalid language test
+    window.closedCaptionLanguage2 = controllerMock.state.closedCaptionOptions.language;
     Html5Skin.setClosedCaptionsLanguage.call(controllerMock);
     controllerMock.state.closedCaptionOptions.availableLanguages = null;
     controllerMock.state.closedCaptionOptions.enabled = true;
     Html5Skin.setClosedCaptionsLanguage.call(controllerMock);
 
-    controllerMock.state.playerState = CONSTANTS.STATE.PAUSE;
     Html5Skin.closeScreen.call(controllerMock);
     controllerMock.state.playerState = CONSTANTS.STATE.END;
     Html5Skin.closeScreen.call(controllerMock);
 
-    Html5Skin.onClosedCaptionChange.call(controllerMock, 'language', 'es');
+    Html5Skin.onClosedCaptionChange.call(controllerMock, 'language', 'en');
     Html5Skin.toggleClosedCaptionEnabled.call(controllerMock);
     Html5Skin.upNextDismissButtonClicked.call(controllerMock);
 
@@ -540,6 +552,31 @@ OO = {
     Html5Skin.findMainVideoElement.call(controllerMock, div);
     Html5Skin.findMainVideoElement.call(controllerMock, {0:videoElement});
 
+    describe('Controller testing Ooyala Ads', function () {
+      it('test after Ooyala ad state', function() {
+        expect(controllerMock.state.afterOoyalaAd).toBe(false);
+        Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.afterOoyalaAd).toBe(false);
+        Html5Skin.onEmbedCodeChangedAfterOoyalaAd.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.afterOoyalaAd).toBe(true);
+        Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.afterOoyalaAd).toBe(false);
+      });
+
+      it('test start screen is shown on playback ready', function() {
+        controllerMock.state.afterOoyalaAd = false;
+        Html5Skin.onPlaybackReady.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
+      });
+
+      it('test loading screen is shown on playback ready after an Ooyala ad', function() {
+        controllerMock.state.afterOoyalaAd = true;
+        Html5Skin.onPlaybackReady.call(controllerMock, 'customerUi');
+        expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
+        controllerMock.state.afterOoyalaAd = false;
+      });
+    });
+
     //test destroy functions last
     Html5Skin.onEmbedCodeChanged.call(controllerMock, 'customerUi', 'RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2', {});
     Html5Skin.onAssetChanged.call(controllerMock, 'customerUi', {content: {streams: [{is_live_stream: true}], title: 'Title', posterImages: [{url:'www.ooyala.com'}]}});
@@ -556,6 +593,11 @@ var controller = require('../js/controller');
  * Validate results from unit tests
  */
 describe('Controller', function () {
+  it('tests change caption language from external API', function () {
+    expect(window.closedCaptionLanguage1).toBe("de");
+    expect(window.closedCaptionLanguage2).not.toBe("sderfes");
+  });
+
   it('tests volume', function () {
     expect(window.vol).toBe(0.5);
   });

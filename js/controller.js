@@ -31,6 +31,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     this.state = {
       "playerParam": {},
       "skinMetaData": {},
+      "attributes": {},
       "persistentSettings": {
         "closedCaptionOptions": {}
       },
@@ -48,6 +49,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "showAdOverlayCloseButton": false,
       "showAdControls": true,
       "showAdMarquee": true,
+      "isOoyalaAds": false,
+      "afterOoyalaAd": false,
       "configLoaded": false,
       "config": {},
       "customSkinJSON": {},
@@ -155,6 +158,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.THUMBNAILS_FETCHED, 'customerUi', _.bind(this.onThumbnailsFetched, this));//xenia: to be replaced by a more appropriate event
       this.mb.subscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi', _.bind(this.onAuthorizationFetched, this));
       this.mb.subscribe(OO.EVENTS.SKIN_METADATA_FETCHED, 'customerUi', _.bind(this.onSkinMetaDataFetched, this));
+      this.mb.subscribe(OO.EVENTS.ATTRIBUTES_FETCHED, 'customerUi', _.bind(this.onAttributesFetched, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
@@ -179,6 +183,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi", _.bind(this.onClosedCaptionsInfoAvailable, this));
         this.mb.subscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi", _.bind(this.onBitrateInfoAvailable, this));
         this.mb.subscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi", _.bind(this.onClosedCaptionCueChanged, this));
+        this.mb.subscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, 'customerUi', _.bind(this.onChangeClosedCaptionLanguage, this));
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi", _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.VC_VIDEO_ELEMENT_IN_FOCUS, "customerUi", _.bind(this.onVideoElementFocus, this));
         this.mb.subscribe(OO.EVENTS.REPLAY, "customerUi", _.bind(this.onReplay, this));
@@ -247,7 +252,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
       }
 
-      var accessibilityControls = new AccessibilityControls(this); //keyboard support
+      this.accessibilityControls = new AccessibilityControls(this); //keyboard support
       this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
     },
 
@@ -283,7 +288,20 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (mountNode) {
         ReactDOM.unmountComponentAtNode(mountNode);
       }
+      this.cleanUpEventListeners()
       this.mb = null;
+    },
+
+    cleanUpEventListeners : function() {
+      this.accessibilityControls.cleanUp()
+    },
+
+    onEmbedCodeChangedAfterOoyalaAd: function(event, embedCode, options) {
+      if (options) {
+        this.state.playerParam = DeepMerge(this.state.playerParam, options);
+      }
+      this.state.isOoyalaAds = false;
+      this.state.afterOoyalaAd = true;
     },
 
     onEmbedCodeChangedAfterOoyalaAd: function(event, embedCode, options) {
@@ -300,7 +318,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.closedCaptionsInfoCache = {};
       this.state.discoveryData = null;
       this.state.thumbnails = null;
+      this.state.afterOoyalaAd = false;
       this.resetUpNextInfo(true);
+
+      if (options && options.ooyalaAds === true) {
+        this.state.isOoyalaAds = true;
+      } else {
+        this.state.isOoyalaAds = false;
+      }
 
       this.state.assetId = embedCode;
       if (options) {
@@ -324,6 +349,15 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.loadConfigData(this.state.playerParam, this.state.persistentSettings, this.state.customSkinJSON, this.state.skinMetaData);
     },
 
+    onAttributesFetched: function (event, attributes) {
+      this.state.attributes = attributes;
+      //anamorphic videos
+      var isAnamorphic = Utils.getPropertyValue(this.state.attributes, 'provider.ots_stretch_to_output');
+      if (isAnamorphic == true || isAnamorphic == "true") {
+        this.state.mainVideoInnerWrapper.addClass('oo-anamorphic');
+      }
+    },
+
     onThumbnailsFetched: function (event, thumbnails) {
       this.state.thumbnails = thumbnails;
     },
@@ -336,6 +370,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.subscribeBasicPlaybackEvents();
 
       this.resetUpNextInfo(true);
+      this.state.isOoyalaAds = false;
 
       this.state.isLiveStream = asset.content.streams[0].is_live_stream;
 
@@ -601,7 +636,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onPlaybackReady: function(event) {
-      this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      if (this.state.afterOoyalaAd) {
+        this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+      }
+
       this.renderSkin({"contentTree": this.state.contentTree});
     },
 
@@ -813,10 +853,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     //merge and load config data
     loadConfigData: function(params, settings, data, skinMetaData) {
-      var localSettings = settings ? settings : {};
-      var inlinePageParams = Utils.getPropertyValue(params, 'skin.inline') ? params.skin.inline : {};
-      var customSkinJSON = data ? data : {};
-      var metaDataSettings = skinMetaData ? skinMetaData : {};
+      var localSettings = Utils.sanitizeConfigData(settings);
+      var inlinePageParams = Utils.sanitizeConfigData(Utils.getPropertyValue(params, 'skin.inline'));
+      var customSkinJSON = Utils.sanitizeConfigData(data);
+      var metaDataSettings = Utils.sanitizeConfigData(skinMetaData);
       var buttonArrayFusion = params.buttonMerge ? params.buttonMerge : 'replace';
 
       //override data in skin config with possible local storage settings, inline data input by user, and CMS settings in backlot/themebuilder
@@ -1071,6 +1111,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SKIN_METADATA_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.ATTRIBUTES_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi');
@@ -1093,6 +1134,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTIONS_INFO_AVAILABLE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.BITRATE_INFO_AVAILABLE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.CLOSED_CAPTION_CUE_CHANGED, "customerUi");
+      this.mb.unsubscribe(OO.EVENTS.CHANGE_CLOSED_CAPTION_LANGUAGE, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.VOLUME_CHANGED, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.state.isPlaybackReadySubscribed = false;
@@ -1407,6 +1449,26 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.renderSkin();
     },
 
+    onChangeClosedCaptionLanguage: function(event, language) {
+      var availableLanguages = this.state.closedCaptionOptions.availableLanguages;
+
+      //validate language is available before update and save
+      if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
+        this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
+        var captionLanguage = this.state.closedCaptionOptions.enabled ? language : "";
+        var mode = this.state.closedCaptionOptions.enabled ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
+        //publish set closed caption event
+        this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, captionLanguage, {"mode": mode});
+        //update skin, save new closed caption language
+        this.renderSkin();
+        this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
+      }
+      //if language not in available languages, log error
+      else {
+        OO.log("Invalid closed caption language.");
+      }
+    },
+
     onClosedCaptionChange: function(name, value) {
       this.state.closedCaptionOptions[name] = this.state.persistentSettings.closedCaptionOptions[name] = value;
       if (name === 'language') {
@@ -1564,7 +1626,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       //find html5 video
-      if (element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
+      if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) != -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
       }
       else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
@@ -1575,7 +1637,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         }
       }
       //find flash object
-      else if (element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
+      else if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) != -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
       }
       else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
