@@ -1,0 +1,54 @@
+/* =====================================
+ * SET VARIABLES
+ * ================================== */
+$berrics-accent-red: #e31111;
+$berrics-font-stack: "Source Code Pro", "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+$berrics-translucent-black-background: rgba(0, 0, 0, 0.7);
+$berrics-black: #000;
+$berrics-white: #fff;
+$berrics-gray-dark: #333;
+//slider
+$slider-volume-width: 100px;
+$slider-volume-height: 2px;
+$slider-volume-thumb-diameter: 14px;
+$slider-volume-thumb-width: ($slider-volume-thumb-diameter/2) - 5;
+$slider-volume-thumb-color: #fff;
+$slider-volume-progress-color: #fff;
+$slider-volume-track-color: #999;
+$slider-volume-width-small: $slider-volume-width * $xsmall-multiple;
+$slider-volume-height-small: $slider-volume-height * $xsmall-multiple;
+$slider-volume-thumb-diameter-small: $slider-volume-thumb-diameter * $xsmall-multiple;
+$scrubber-bar-padding-height: 16px;
+/* =====================================
+ * colors
+ * ================================== */
+$blue-light: $berrics-white;
+$brand-primary: $berrics-white;
+/* =====================================
+ * typography
+ * ================================== */
+ @at-root {
+     @font-face {
+         font-family: "the-berrics";
+         src: url('#{$font-path}/theberrics.eot');
+         src: url('#{$font-path}/theberrics.eot?#iefix') format('embedded-opentype'),
+         url('#{$font-path}/theberrics.woff2') format('woff2'),
+         url('#{$font-path}/theberrics.woff') format('woff'),
+         url('#{$font-path}/theberrics.svg') format('svg');
+         font-weight: normal;
+         font-style: normal;
+     }
+ }
+$font-family-roboto: $berrics-font-stack;
+$font-family-roboto-condensed: $berrics-font-stack;
+$font-family-roboto-bold: $berrics-font-stack;
+$font-family-roboto-condensed-bold: $berrics-font-stack;
+$font-family-verdana: $berrics-font-stack;
+$font-family-base: $berrics-font-stack;
+
+/* remove button glows (Chrome) */
+@mixin highlight() {
+  &:hover {
+    opacity: 1.0;
+  }
+}
