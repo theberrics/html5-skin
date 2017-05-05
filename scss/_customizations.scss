@@ -374,7 +374,7 @@ button.oo-close-button:hover {
         // hide ad title and ad skip button
         .oo-ad-title,
         .oo-skip-button {
-            display: none;
+            //display: none;
         }
 
     }
@@ -633,4 +633,8 @@ video.oo-blur {
     -webkit-filter: blur(0);
     -moz-filter: blur(0);
     filter: blur(0);
+}
+
+.oo-player-skin-plugins {
+  bottom: 0;
 }

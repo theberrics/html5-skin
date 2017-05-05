@@ -56,7 +56,7 @@ body,.all-wrapper,.mixin-responsive-video,.mixin-responsive-video>*{box-sizing:b
 
     var playerParameters = {
       // 'autoplay': true,
-      'debug': true,
+      'debug': false,
       'encodingPriority': encodingPriority.ooyalaDefault,
       'initialBitrate': {
         'level': .6,
@@ -64,16 +64,16 @@ body,.all-wrapper,.mixin-responsive-video,.mixin-responsive-video>*{box-sizing:b
       },
       'google-ima-ads-manager': {
         'all_ads': [
-          // {
-          //   'position_type': 't',
-          //   'tag_url': 'https://pubads.g.doubleclick.net/gampad/ads?sz=700x394&iu=/5885/VPRE001&ciu_szs&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]',
-          //   'position': 0
-          // },
-          // {
-          //   'position_type': 't',
-          //   'tag_url': 'https://pubads.g.doubleclick.net/gampad/ads?sz=700x394&iu=/5885/VPOST001&ciu_szs&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]',
-          //   'position': 1000000000
-          // }
+          {
+            'position_type': 't',
+            'tag_url': 'https://pubads.g.doubleclick.net/gampad/ads?sz=700x394&iu=/5885/VPRE001&ciu_szs&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]',
+            'position': 0
+          },
+          {
+            'position_type': 't',
+            'tag_url': 'https://pubads.g.doubleclick.net/gampad/ads?sz=700x394&iu=/5885/VPOST001&ciu_szs&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]',
+            'position': 1000000000
+          }
         ]
       },
       'pcode': 'o5cWMyOtJW4wGvDintr2yQ_yjBmX',
