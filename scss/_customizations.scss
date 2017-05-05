@@ -635,6 +635,25 @@ video.oo-blur {
     filter: blur(0);
 }
 
-.oo-player-skin-plugins {
+// full size pre/post roll
+.oo-player-skin-plugins,
+.oo-player-skin-plugins-click-layer {
   bottom: 0;
+}
+
+.oo-ad-screen-panel {
+  // fix pre/post roll click through not working
+  .oo-ad-screen-panel-click-layer {
+    display: none;
+  }
+  // don't show ad title
+  .oo-ad-title {
+    display: none;
+  }
+  // don't skip button icon, just text
+  .oo-skip-button {
+    .oo-button-icon {
+      display: none;
+    }
+  }
 }
