@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<script src="//player.ooyala.com/static/v4/stable/4.13.4/core.min.js"></script>
+<script src="//player.ooyala.com/static/v4/stable/4.13.4/video-plugin/main_html5.min.js"></script>
+<script src="//player.ooyala.com/static/v4/stable/4.13.4/ad-plugin/google_ima.min.js"></script>
+<script src="//player.ooyala.com/static/v4/stable/4.13.4/video-plugin/osmf_flash.min.js"></script>
+<script src="//player.ooyala.com/static/v4/stable/4.13.4/video-plugin/bit_wrapper.min.js"></script>
+<script src="//player.ooyala.com/static/v4/stable/4.13.4/other-plugin/discovery_api.min.js"></script>
+<!-- <script src="//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/html5-skin.min.js"></script> -->
+<!-- <link href="//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/html5-skin.min.css" rel="stylesheet" type="text/css"> -->
+<script src="build/html5-skin.min.js"></script>
+<link href="build/html5-skin.min.css" rel="stylesheet" type="text/css">
+<style>
+body,.all-wrapper,.mixin-responsive-video,.mixin-responsive-video>*{box-sizing:border-box;margin:0;padding:0;position:relative;z-index:0}.mixin-responsive-video{height:0;padding-top:56.25%}.mixin-responsive-video>*{bottom:0;height:100%;left:0;position:absolute;right:0;top:0;width:100%}.mixin-align-center{margin:0 auto}.var-all-wrapper-width{max-width:100%;width:700px}
+</style>
+</head>
+<body>
+<div class="all-wrapper mixin-align-center  var-all-wrapper-width">
+<div class="mixin-responsive-video mixin-responsive-video-outter">
+<div id="container"></div>
+</div>
+</div>
+<script type="text/javascript">
+;(function(window, document, OO, undefined) {
+
+  window.videoPlayer = {};
+  window.videoPlayer.includePath = '';
+
+  window.videoPlayer.getParameters = function() {
+
+    var skinConfigJSON = {
+      'custom': 'skin.json',
+      'ooyalaDefault': '//player.ooyala.com/static/v4/stable/4.13.4/skin-plugin/skin.json'
+    };
+
+    var encodingPriority = {
+      'hdsFirst': ['hds', 'mp4', 'dash', 'hls', 'webm'],
+      'mp4Only': ['mp4'],
+      'ooyalaDefault': ['dash_drm', 'hls_drm', 'hls', 'dash', 'mp4', 'hds', 'webm']
+    };
+
+    var skinConfigInline = {
+      'custom': {
+        'shareScreen': {
+          'embed': {
+            'source': '<iframe width="560" height="315" src="http://theberrics.com/video/post/embed/id/" frameborder="0" scrolling="no" allowfullscreen></iframe>'
+          }
+        }
+      },
+      'none': {}
+    };
+
+    var playerParameters = {
+      // 'autoplay': true,
+      'debug': false,
+      'encodingPriority': encodingPriority.ooyalaDefault,
+      'initialBitrate': {
+        'level': .6,
+        'duration': 5
+      },
+      'google-ima-ads-manager': {
+        'all_ads': [
+          {
+            'position_type': 't',
+            'tag_url': 'https://pubads.g.doubleclick.net/gampad/ads?sz=700x394&iu=/5885/VPRE001&ciu_szs&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]',
+            'position': 0
+          },
+          {
+            'position_type': 't',
+            'tag_url': 'https://pubads.g.doubleclick.net/gampad/ads?sz=700x394&iu=/5885/VPOST001&ciu_szs&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp]',
+            'position': 1000000000
+          }
+        ]
+      },
+      'pcode': 'o5cWMyOtJW4wGvDintr2yQ_yjBmX',
+      'playerBrandingId': 'e154ebb7c3b84391aec43979664a30e5',
+      'platform': 'html5', // platform must be specified
+      'preload': true,
+      'skin': {
+        'config': skinConfigJSON.custom,
+        'inline': skinConfigInline.custom
+      },
+      'onCreate': function(player) {
+        // auto play up next
+        var firstVideoPlayed = false;
+
+        player.mb.subscribe('*', '', function(eventName) {
+
+          if (eventName === OO.EVENTS.PLAYED) {
+            firstVideoPlayed = true;
+          }
+
+          if (firstVideoPlayed === true && eventName === OO.EVENTS.PLAYBACK_READY) {
+            player.play();
+          }
+
+        });
+      }
+    };
+
+    return playerParameters;
+  }
+
+  var playerParameters = window.videoPlayer.getParameters();
+
+  OO.ready(function() {
+
+    window.pp = OO.Player.create('container', 'ZrNTJzOTE6qUkAqAgzpQxcfmXUVVPxGx', playerParameters);
+
+  });
+
+})(window, window.document, window.OO);
+</script>
+</body>
+</html>
