@@ -26,6 +26,10 @@ module.exports = {
     ERROR_SCREEN: "errorScreen"
   },
 
+  CUSTOM_EVENTS: {
+    INITIAL_PLAY_REQUESTED: 'html5SkinInitialPlayRequested'
+  },
+
   SKIN_TEXT: {
     LEARN_MORE: "Learn More",
     CLOSED_CAPTION_PREVIEW: "CLOSED CAPTION PREVIEW",
@@ -85,6 +89,18 @@ module.exports = {
     DEPRESSED: "Depressed",
     RAISED: "Raised",
     SHADOW: "Shadow"
+  },
+
+  ARIA_LABELS: {
+    VIDEO_PLAYER: "Video Player",
+    START_PLAYBACK: "Start Playback",
+    PLAY: "Play",
+    PAUSE: "Pause",
+    REPLAY: "Replay",
+    MUTE: "Mute",
+    UNMUTE: "Unmute",
+    FULLSCREEN: "Fullscreen",
+    EXIT_FULLSCREEN: "Exit Fullscreen",
   },
 
   KEYCODES: {

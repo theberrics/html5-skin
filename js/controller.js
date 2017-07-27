@@ -22,7 +22,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = {"releaseVersion": "4.11.13", "rev": "<SKIN_REV>"};
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.15.7", "rev": "<SKIN_REV>"};
   }
 
   var Html5Skin = function (mb, id) {
@@ -78,6 +78,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "mainVideoPlayhead": 0,
       "adVideoPlayhead": 0,
       "focusedElement": null,
+      "playPauseButtonFocused": false,
 
       "currentAdsInfo": {
         "currentAdItem": null,
@@ -163,7 +164,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
       this.mb.subscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi', _.bind(this.onPlaybackReady, this));
       this.mb.subscribe(OO.EVENTS.ERROR, "customerUi", _.bind(this.onErrorEvent, this));
+      this.mb.subscribe(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED, "customerUi", _.bind(this.onInitialPlayRequested, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
+      this.mb.addDependent(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED, OO.EVENTS.PLAYBACK_READY);
       this.state.isPlaybackReadySubscribed = true;
     },
 
@@ -240,6 +243,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       //initial DOM manipulation
       this.state.mainVideoContainer.addClass('oo-player-container');
       this.state.mainVideoInnerWrapper.addClass('oo-player');
+      this.state.mainVideoInnerWrapper.attr('aria-label', CONSTANTS.ARIA_LABELS.VIDEO_PLAYER);
+      // Setting the tabindex will let some screen readers recognize this element as a group
+      // identified with the ARIA label above. We set it to -1 in order to prevent actual keyboard focus
+      this.state.mainVideoInnerWrapper.attr('tabindex', '-1');
       this.state.mainVideoInnerWrapper.append("<div class='oo-player-skin'></div>");
 
       //load player with page level config param if exist
@@ -253,7 +260,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       this.accessibilityControls = new AccessibilityControls(this); //keyboard support
-      this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
+      this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
     },
 
     onVcVideoElementCreated: function(event, params) {
@@ -351,11 +358,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
     onAttributesFetched: function (event, attributes) {
       this.state.attributes = attributes;
-      //anamorphic videos
-      var isAnamorphic = Utils.getPropertyValue(this.state.attributes, 'provider.ots_stretch_to_output');
-      if (isAnamorphic == true || isAnamorphic == "true") {
-        this.state.mainVideoInnerWrapper.addClass('oo-anamorphic');
-      }
+      // This is the first point at which we know whether the video is anamorphic or not,
+      // apply fix if necessary
+      this.trySetAnamorphicFixState(true);
     },
 
     onThumbnailsFetched: function (event, thumbnails) {
@@ -672,6 +677,17 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    /**
+     * Handles the custom INITIAL_PLAY_REQUESTED skin event. This event is used in
+     * order to defer INITIAL_PLAY until PLAYBACK_READY has been fired. Doing this allows
+     * us to display the big play button before the player finishes loading. If the user
+     * clicks on the button before PLAYBACK_READY, the player will simply show the loading
+     * spinner and INITIAL_PLAY will be automatically fired after PLAYBACK_READY itself fires.
+     */
+    onInitialPlayRequested: function() {
+      this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
+    },
+
     /********************************************************************
       ADS RELATED EVENTS
     *********************************************************************/
@@ -684,12 +700,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.state.isPlayingAd = false;
       this.state.pluginsElement.removeClass("oo-showing");
       this.state.pluginsClickElement.removeClass("oo-showing");
+      // Restore anamorphic videos fix after ad playback if necessary
+      this.trySetAnamorphicFixState(true);
       this.renderSkin();
     },
 
     onWillPlayAds: function(event) {
       OO.log("onWillPlayAds is called from event = " + event);
       this.state.isPlayingAd = true;
+      // Anamorphic videos fix should not be active during ad playback
+      this.trySetAnamorphicFixState(false);
       this.state.pluginsElement.addClass("oo-showing");
       this.state.pluginsElement.css({
         height: "",
@@ -1118,6 +1138,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.PLAYBACK_READY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ERROR, "customerUi");
       this.mb.unsubscribe(OO.EVENTS.SET_EMBED_CODE_AFTER_OOYALA_AD, 'customerUi');
+      // custom skin events
+      this.mb.unsubscribe(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED, "customerUi");
     },
 
     unsubscribeBasicPlaybackEvents: function() {
@@ -1225,7 +1247,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     togglePlayPause: function() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
-          this.mb.publish(OO.EVENTS.INITIAL_PLAY, Date.now());
+          this.mb.publish(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED);
           break;
         case CONSTANTS.STATE.END:
           if(Utils.isAndroid() || Utils.isIos()) {
@@ -1476,6 +1498,32 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
       this.renderSkin();
       this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
+    },
+
+    /**
+     * Used to enable or disable the CSS workaround that prevents anamorphic videos from
+     * being distorted on Firefox. The fix will only be enabled if ots_stretch_to_output
+     * is set to true in the player attributes.
+     * Note that currently the oo-anamorphic class has effect only on Firefox.
+     * @param {boolen} enabled A value that determines whether to enable or disable the anamorphic videos CSS fix.
+     */
+    trySetAnamorphicFixState: function(enabled) {
+      if (!this.state || !this.state.mainVideoInnerWrapper) {
+        return;
+      }
+
+      if (enabled) {
+        var isAnamorphic = Utils.getPropertyValue(this.state.attributes, 'provider.ots_stretch_to_output');
+
+        // Only enable anamorphic videos fix if video actually requires it
+        if (isAnamorphic === true || isAnamorphic === 'true') {
+          this.state.mainVideoInnerWrapper.addClass('oo-anamorphic');
+          OO.log('Anamorphic video fix: ON');
+        }
+      } else {
+        this.state.mainVideoInnerWrapper.removeClass('oo-anamorphic');
+        OO.log('Anamorphic video fix: OFF');
+      }
     },
 
     toggleClosedCaptionEnabled: function() {

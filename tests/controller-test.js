@@ -8,6 +8,7 @@ jest.dontMock('underscore');
 jest.dontMock('jquery');
 
 var CONSTANTS = require('../js/constants/constants');
+var sinon = require('sinon');
 
 /**
  * Mock OO
@@ -179,6 +180,7 @@ OO = {
       exitFullWindow: function() {},
       exitFullWindowOnEscKey: function() {},
       onBuffered: function() {},
+      onInitialPlayRequested: function() {},
       unsubscribeBasicPlaybackEvents: function() {},
       resetUpNextInfo: function(a) {},
       showUpNextScreenWhenReady: function(a,b) {},
@@ -197,6 +199,7 @@ OO = {
       displayMoreOptionsScreen: function(a) {},
       closeMoreOptionsScreen: function() {},
       pausedCallback: function() {},
+      trySetAnamorphicFixState: function() {},
       renderSkin: function() {window.isSkinRendered = true;},
       cancelTimer: function() {window.isTimerCanceled = true;},
       startHideControlBarTimer: function() {},
@@ -552,6 +555,43 @@ OO = {
     Html5Skin.findMainVideoElement.call(controllerMock, div);
     Html5Skin.findMainVideoElement.call(controllerMock, {0:videoElement});
 
+    describe('Controller testing skin initialization', function() {
+      // TODO
+      // This gets cleared up below in the "destroy" tests due to the way this
+      // test suite is currently set up. We need a lot of refactoring to fix this,
+      // so we're working around it for now
+      var mb = controllerMock.mb;
+      var messageBusSpy;
+
+      beforeEach(function() {
+        controllerMock.mb = mb;
+        messageBusSpy = sinon.spy(controllerMock.mb, 'publish');
+      });
+
+      afterEach(function() {
+        messageBusSpy.restore();
+      });
+
+      it('should show Start Screen after player created', function() {
+        Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', 'elementId', {});
+        expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.START_SCREEN);
+      });
+
+      it('should raise INITIAL_PLAY_REQUESTED event when toggling play/pause on Start Screen', function() {
+        Html5Skin.onPlayerCreated.call(controllerMock, 'customerUi', 'elementId', {});
+        Html5Skin.togglePlayPause.call(controllerMock);
+        expect(messageBusSpy.calledOnce).toBe(true);
+        expect(messageBusSpy.calledWith(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED)).toBe(true);
+      });
+
+      it('should publish INITIAL_PLAY after INITIAL_PLAY_REQUESTED', function() {
+        Html5Skin.onInitialPlayRequested.call(controllerMock);
+        expect(messageBusSpy.calledOnce).toBe(true);
+        expect(messageBusSpy.args.length).toBe(1);
+        expect(messageBusSpy.calledWith(OO.EVENTS.INITIAL_PLAY)).toBe(true);
+      });
+    });
+
     describe('Controller testing Ooyala Ads', function () {
       it('test after Ooyala ad state', function() {
         expect(controllerMock.state.afterOoyalaAd).toBe(false);
@@ -574,6 +614,57 @@ OO = {
         Html5Skin.onPlaybackReady.call(controllerMock, 'customerUi');
         expect(controllerMock.state.screenToShow).toBe(CONSTANTS.SCREEN.LOADING_SCREEN);
         controllerMock.state.afterOoyalaAd = false;
+      });
+    });
+
+    describe('Controller testing Anamorphic videos fix', function() {
+      var addClassSpy = null;
+      var removeClassSpy = null;
+      var attributesParam = null;
+      var attributesState = JSON.parse(JSON.stringify(controllerMock.state.attributes));
+
+      beforeEach(function() {
+        attributesParam = {
+          provider: {
+            'ots_stretch_to_output': true
+          }
+        };
+        addClassSpy = sinon.spy(controllerMock.state.mainVideoInnerWrapper, 'addClass');
+        removeClassSpy = sinon.spy(controllerMock.state.mainVideoInnerWrapper, 'removeClass');
+      });
+
+      afterEach(function() {
+        controllerMock.state.mainVideoInnerWrapper.addClass.restore();
+        controllerMock.state.mainVideoInnerWrapper.removeClass.restore();
+        controllerMock.state.attributes = attributesState;
+      });
+
+      it('should apply anamorphic CSS fix when ots_stretch_to_output is true', function() {
+        Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', attributesParam);
+        Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
+        expect(addClassSpy.callCount).toBe(1);
+        expect(removeClassSpy.callCount).toBe(0);
+      });
+
+      it('should not apply anamorphic CSS fix when ots_stretch_to_output isn\'t true', function() {
+        attributesParam.provider = {};
+        Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', attributesParam);
+        Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
+        attributesParam.provider = { 'ots_stretch_to_output': false };
+        Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', attributesParam);
+        Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
+        expect(addClassSpy.callCount).toBe(0);
+        expect(removeClassSpy.callCount).toBe(0);
+      });
+
+      it('should disable anamorphic CSS fix when passing false', function() {
+        Html5Skin.onAttributesFetched.call(controllerMock, 'customerUi', attributesParam);
+        Html5Skin.trySetAnamorphicFixState.call(controllerMock, true);
+        expect(addClassSpy.callCount).toBe(1);
+        Html5Skin.onWillPlayAds.call(controllerMock, 'customerUi');
+        Html5Skin.trySetAnamorphicFixState.call(controllerMock, false);
+        expect(addClassSpy.callCount).toBe(1);
+        expect(removeClassSpy.callCount).toBe(1);
       });
     });
 
