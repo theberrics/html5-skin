@@ -64,7 +64,7 @@ button.oo-close-button:hover {
     }
 
     // style play button on start screen
-    a.oo-action-icon[data-reactid] {
+    .oo-action-icon[data-reactid] {
         background-color: rgba(0,0,0,.65);
         display: inline-block !important;
         padding: 16px 13px 16px 19px;
