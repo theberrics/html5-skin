@@ -11,6 +11,9 @@
   // Utility classes
   @import "base/utilities";
 
+  // Customizations Variables
+  @import "customizations-variables";
+
   // Normalize and reset
   @import "base/normalize";
   @import "base/reset";
@@ -61,6 +64,9 @@
 
   // Skin
   @import "skin/default";
+
+  // Customizations
+  @import "customizations";
 }
 
 //override non-responsive css on debug.ooyala.com

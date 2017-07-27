@@ -756,6 +756,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onShowAdControls: function(event, showAdControls) {
+      // TODO fix showAdControls is never passed in,
+      // so it defaults to "false"; though it should be true
+      showAdControls = true;
       this.state.showAdControls = showAdControls;
       if (showAdControls && this.state.config.adScreen.showControlBar) {
         this.state.pluginsElement.removeClass("oo-full");
@@ -768,6 +771,9 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     onShowAdMarquee: function(event, showAdMarquee) {
+      // TODO fix showAdMarquee is never passed in,
+      // so it defaults to "false"; though it should be true
+      showAdMarquee = true;
       this.state.showAdMarquee = showAdMarquee;
       this.renderSkin();
     },

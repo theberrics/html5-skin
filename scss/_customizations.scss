@@ -1,0 +1,659 @@
+/* =====================================
+ * general
+ * ================================== */
+// remove glow from buttons and icons
+[class^="oo-icon-"],
+[class*=" oo-icon-"],
+button.oo-close-button:hover {
+    filter: none !important;
+}
+[class^="oo-icon-"],
+[class*=" oo-icon-"] {
+    &:not(.oo-icon-system-menu) {
+        font-family: "the-berrics" !important;
+    }
+}
+/* =====================================
+ * state screen
+ * ================================== */
+.oo-state-screen {
+
+    // add hover state to video player (part 1 of 2)
+    &:hover .oo-state-screen-poster:before {
+        background-color: rgba(0,0,0,.6);
+    }
+
+    // make selectable state screens appear "clickable"
+    .oo-state-screen-selectable {
+        cursor: pointer;
+    }
+
+    // add hover state to video player (part 2 of 2)
+    .oo-state-screen-poster {
+
+        &:before {
+            background-color: rgba(0,0,0,0);
+            bottom: 0;
+            content: '';
+            height: 100%;
+            left: 0;
+            display: block;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: background-color .25s;
+            width: 100%;
+        }
+
+    }
+
+    // set anchor color of action icons
+    .oo-action-icon {
+        color: transparent;
+    }
+
+}
+/* =====================================
+ * start screen
+ * ================================== */
+.oo-start-screen {
+
+    // remove linear-gradient from start screen proster image
+    .oo-start-screen-linear-gradient {
+        display: none;
+    }
+
+    // style play button on start screen
+    a.oo-action-icon[data-reactid] {
+        background-color: rgba(0,0,0,.65);
+        display: inline-block !important;
+        padding: 16px 13px 16px 19px;
+        width: auto !important;
+    }
+    .oo-icon-play-slick {
+        //text-shadow: 1px 2px 4px rgba(0,0,0,.3);
+        //background-color: rgba(0,0,0,.65);
+        //padding: 50% 42% 50% 60%;
+    }
+
+}
+/* =====================================
+ * pause screen
+ * ================================== */
+.oo-pause-screen {
+
+    // remove fading underlay from pause screen
+    .oo-fading-underlay,
+    .oo-fading-underlay-active {
+        display: none;
+    }
+
+}
+/* =====================================
+ * ad screen panel
+ * ================================== */
+ .oo-ad-screen-panel {
+
+    .oo-ad-playback-info {
+        text-align: left !important;
+    }
+
+ }
+/* =====================================
+ * share panel
+ * ================================== */
+.oo-share-tab-panel {
+
+    .oo-social-icon {
+        display: inline-block !important;
+    }
+
+    // hide share panel action text "Invest In Social Change"
+    .oo-social-action-text {
+        display: none;
+    }
+
+    // social icons on social share panel
+    .oo-facebook {
+        background-image: url("assets/images/social-facebook.svg");
+    }
+
+    .oo-twitter {
+        background-image: url("assets/images/social-twitter.svg");
+    }
+
+    .oo-google-plus {
+        display: none !important;
+    }
+
+    .oo-email-share {
+        display: none !important;
+    }
+
+    // style embed code text area
+    .oo-form-control {
+
+        background-color: $berrics-translucent-black-background;
+        border-color: $berrics-gray-dark;
+        border-radius: 0;
+        color: $berrics-white;
+
+        &:disabled,
+        &[readonly] {
+            background-color: $berrics-translucent-black-background;
+        }
+
+    }
+
+}
+/* =====================================
+* control bar
+* ================================== */
+.oo-control-bar {
+
+    // set transparent black background
+    // background: $berrics-translucent-black-background;
+    box-shadow: inset -80px rgba(0,0,0,1);
+    height: 72px !important; // this is now set in the skin.json
+
+    // hide closed caption button
+    .oo-closed-caption {
+      display: none;
+    }
+
+    // set control size
+    .oo-control-bar-item {
+      font-size: 20px !important;
+      text-shadow: 0px 1px 2px rgba(0,0,0,.6);
+      &:hover {
+        transition: .1s ease-in-out !important;
+        transform: scale(1.1) !important;
+      }
+    }
+
+    .oo-control-bar-items-wrapper {
+      padding: 0px 8px 0px 8px;
+        // set color of selected control bar items
+        .oo-control-bar-item.oo-selected > span {
+            color: $berrics-white !important;
+
+        }
+
+    }
+
+    .oo-icon-discovery-binoculars  {
+      font-size: 1.5em !important;
+    }
+
+    .oo-popover  {
+      bottom: 48px !important;
+    }
+}
+
+/* =====================================
+* scrubber bar
+* ================================== */
+.oo-scrubber-bar-container {
+
+    .oo-scrubber-bar-hover {
+      height: 2px !important;
+    }
+    .oo-scrubber-bar-padding {
+
+        // make scubber bar area appear "clickable"
+        cursor: pointer;
+
+        // remove rounded corners from scrubber bar
+        .oo-scrubber-bar,
+        .oo-buffered-indicator,
+        .oo-played-indicator,
+        .oo-hovered-indicator {
+            border-radius: 0;
+            height: 2px !important;
+        }
+        .oo-scrubber-bar{
+            box-shadow: 0px 1px 4px rgba(0,0,0,0.4);
+        }
+        .oo-playhead-padding {
+
+            // style play head
+            .oo-playhead {
+                background: $berrics-white;
+                box-shadow: 0px 1px 2px rgba(0,0,0,.6);
+                border-radius: 0;
+                height: 15px;
+                top: 43%;
+                width: 2px !important;
+            }
+
+            .oo-playhead-hovering {
+                top: 43% !important;
+            }
+
+        }
+
+    }
+
+}
+/* =====================================
+* slider (volume)
+* ================================== */
+.oo-volume {
+
+    // style volume slider
+    .oo-slider-volume[type="range"] {
+
+        cursor: pointer;
+        //border-top-width: 23px;
+        outline: none !important;
+        //padding: 0;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 6px;
+
+        &::-webkit-slider-thumb {
+            width: #{$slider-volume-thumb-width};
+            //border: 1px solid #000;
+            border: none;
+            border-radius: 0;
+            box-shadow: 0px 1px 2px rgba(0,0,0,.6);
+        }
+
+        &::-moz-range-thumb {
+            width: #{$slider-volume-thumb-width};
+            //border: 1px solid #000;
+            border: none;
+            border-radius: 0;
+            box-shadow: 0px 1px 2px rgba(0,0,0,.6);
+        }
+
+        &::-ms-thumb {
+            width: #{$slider-volume-thumb-width};
+            //border: 1px solid #000;
+            border: none;
+            border-radius: 0;
+            box-shadow: 0px 1px 2px rgba(0,0,0,.6);
+        }
+
+    }
+
+}
+
+/*======================================
+*  discovery screen
+*===================================== */
+
+//Sets font and size of 'Discover' on screen
+.oo-content-screen-title  {
+  font-family: $berrics-font-stack !important;
+  font-size: 1.2em !important;
+  .oo-icon-discovery-binoculars  {
+    font-size: 1.5em !important;
+    vertical-align: middle;
+  }
+}
+
+//sets font and size of video titles in grid
+.oo-discovery-content-name  {
+  font-family: $berrics-font-stack !important;
+  font-size: .8em !important;
+}
+
+//increases width of images in grid
+// .oo-discovery-image-wrapper-style  {
+//   width: 40%;
+// }
+
+//sets size of left and right arrows on screen
+.oo-icon-system-right-arrow, .oo-icon-system-left-arrow  {
+  font-size: 24px !important;
+}
+
+.oo-left-button, .oo-right-button  {
+  //adds hover state to arrows
+  &:hover {
+    transition: .1s ease-in-out !important;
+    transform: scale(1.2) !important;
+  }
+}
+
+/*======================================
+* up next
+*====================================*/
+
+//positions up next panel
+.oo-up-next-panel  {
+  padding: 0px 8px 0px 8px;
+  width: 96%;
+  left: 2%;
+  bottom: 8px;
+}
+
+//decreases size of count-down clock
+.oo-up-next-count-down  {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+//sets font size and vertical alignment of up next title
+.oo-up-next-title-text  {
+  font-size: 1em !important;
+  font-weight: regular !important;
+  vertical-align: middle !important;
+}
+.oo-up-next-title  {
+  top: 50% !important;
+  transform: translateY(-50%);
+}
+
+/* =====================================
+* spinner
+* ================================== */
+.oo-spinner-wrapper {
+
+    // style loading spinner
+    background: url("assets/images/loader_svg_bg.svg") center bottom no-repeat;
+    background-size: cover;
+    padding: 0 15px 18px 15px;
+
+    // adjust spin speed
+    .oo-spinner {
+      -webkit-animation-duration: 1.1s;
+      -moz-animation-duration: 1.1s;
+      animation-duration: 1.1s;
+    }
+
+}
+/* =====================================
+* ad panel
+* ================================== */
+.oo-ad-screen-panel {
+
+    .oo-ad-top-bar {
+
+        // hide ad title and ad skip button
+        .oo-ad-title,
+        .oo-skip-button {
+            //display: none;
+        }
+
+    }
+
+}
+/* =====================================
+* more options panel
+* ================================== */
+.oo-more-options-panel {
+
+    .oo-more-options-items {
+
+        // style more options panel buttons
+        .oo-control-bar-item {
+            background: none;
+            border: none;
+        }
+
+    }
+
+}
+/* =====================================
+* video quality panel
+* ================================== */
+// SCREEN
+.oo-quality-panel {
+
+    .oo-quality-screen-content {
+
+        ul {
+
+            li {
+
+                a.oo-quality-btn {
+
+                    // set button border radius
+                    border-radius: 0;
+
+                    // set selected quality text color
+                    &.oo-selected {
+                        border-color: $berrics-accent-red !important;
+                        color: $berrics-accent-red !important;
+                    }
+
+                }
+
+                a.oo-quality-auto-btn {
+
+                    &.oo-selected {
+
+                        // set auto quality text color
+                        .oo-quality-auto-icon,
+                        .oo-quality-auto-label {
+                            color: $berrics-accent-red;
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
+// POPOVER
+.oo-popover {
+  background: $berrics-translucent-black-background;
+  border-radius: 0;
+}
+.oo-quality-popover {
+
+    // style video quality popover
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+
+    .oo-quality-screen-content {
+
+        ul {
+
+            li {
+
+                a.oo-quality-btn {
+
+                    // set selected quality text color
+                    &.oo-selected {
+                        color: $berrics-accent-red !important;
+                    }
+
+                }
+
+                a.oo-quality-auto-btn {
+
+                    // remove auto quality text icon
+                    .oo-quality-auto-icon {
+                        display: none;
+                    }
+
+                    &.oo-selected {
+
+                        // set auto quality text color
+                        .oo-quality-auto-icon,
+                        .oo-quality-auto-label {
+                            color: $berrics-accent-red !important;
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
+/* =====================================
+ * thumbnail
+ * ================================== */
+// style scrubber bar thumbnail
+.oo-thumbnail {
+    background-color: $berrics-black;
+    //border: 1px solid $berrics-black;
+    border-radius: 0;
+    box-shadow: 0px 1px 2px rgba(0,0,0,.65);
+}
+// style scrubber bar thumbnail time stamp
+.oo-thumbnail-time {
+    background-color: $berrics-translucent-black-background;
+    border-radius: 0;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+/* =====================================
+ * x-small
+ * ================================== */
+.oo-xsmall {
+
+    // play button size on start screen
+    .oo-start-screen {
+
+        a.oo-action-icon {
+            padding: 6px 5px 6px 7px;
+        }
+
+    }
+
+    .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
+        font-size: 32px; // default 50px (* .37)
+    }
+
+    // set control bar height at xsmall
+    .oo-control-bar {
+        height: 77px !important;
+        .oo-control-bar-items-wrapper {
+          padding: 0px 8px 0px 8px;
+          margin-top: 8px;
+          margin-bottom: 16px !important;
+        }
+    }
+
+    .oo-scrubber-bar-container {
+
+        // compensate for control bar height at xsmall
+        height: 34px;
+
+        .oo-scrubber-bar-padding {
+
+            .oo-playhead-padding {
+
+                // style play head
+                .oo-playhead {
+                    border-radius: 0;
+                    height: 12px;
+                    width: 4px;
+                }
+
+            }
+
+        }
+
+    }
+
+    // style scrubber bar thumbnail
+    .oo-thumbnail {
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    // style scrubber bar thumbnail time stamp
+    .oo-thumbnail-time {
+        border-radius: 0;
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+  .oo-volume  {
+    display: none;
+  }
+}
+/* =====================================
+ * small
+ * ================================== */
+.oo-small {
+
+    // play button size on start screen
+    .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
+        font-size: 32px; // default 86px (* .37)
+    }
+
+}
+/* =====================================
+ * medium
+ * ================================== */
+.oo-medium {
+
+    // play button size on start screen
+    .oo-start-screen {
+
+        a.oo-action-icon {
+            padding: 22px 18px 22px 26px;
+        }
+
+    }
+    // play button size on start screen
+    .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
+        font-size: 56px; // default 150px (* .37)
+    }
+
+}
+/* =====================================
+ * large
+ * ================================== */
+.oo-large {
+
+    // play button size on start screen
+    .oo-start-screen {
+
+        a.oo-action-icon {
+            padding: 22px 18px 22px 26px;
+        }
+
+    }
+    // play button size on start screen
+    .oo-action-icon span.oo-icon, .oo-action-icon-pause.oo-animate-pause {
+        font-size: 56px; // default 150px (* .37)
+    }
+
+}
+
+// remove video blur on pause
+video.oo-blur {
+    -webkit-filter: blur(0);
+    -moz-filter: blur(0);
+    filter: blur(0);
+}
+
+// full size pre/post roll
+.oo-player-skin-plugins,
+.oo-player-skin-plugins-click-layer {
+  bottom: 0;
+}
+
+.oo-ad-screen-panel {
+  // fix pre/post roll click through not working
+  .oo-ad-screen-panel-click-layer {
+    display: none;
+  }
+  // don't show ad title
+  .oo-ad-title {
+    display: none;
+  }
+  // don't skip button icon, just text
+  .oo-skip-button {
+    .oo-button-icon {
+      display: none;
+    }
+  }
+}

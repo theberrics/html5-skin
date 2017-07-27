@@ -43,19 +43,19 @@ var SharePanel = React.createClass({
       var socialContent = _.uniq(Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []));
 
       var shareButtons = [];
-      socialContent.forEach(function(shareButton) {
+      socialContent.forEach(function(shareButton, index) {
         switch (shareButton) {
           case "twitter":
-            shareButtons.push(<a className="oo-twitter" onClick={this.handleTwitterClick}></a>);
+            shareButtons.push(<a key={index} className="oo-twitter" onClick={this.handleTwitterClick}></a>);
             break;
           case "facebook":
-            shareButtons.push(<a className="oo-facebook" onClick={this.handleFacebookClick}></a>);
+            shareButtons.push(<a key={index} className="oo-facebook" onClick={this.handleFacebookClick}></a>);
             break;
           case "google+":
-            shareButtons.push(<a className="oo-google-plus" onClick={this.handleGPlusClick}></a>);
+            shareButtons.push(<a key={index} className="oo-google-plus" onClick={this.handleGPlusClick}></a>);
             break;
           case "email":
-            shareButtons.push(<a className="oo-email-share" onClick={this.handleEmailClick}></a>);
+            shareButtons.push(<a key={index} className="oo-email-share" onClick={this.handleEmailClick}></a>);
             break;
         }
       }, this);
@@ -110,7 +110,12 @@ var SharePanel = React.createClass({
 
   handleFacebookClick: function() {
     var facebookUrl = "http://www.facebook.com/sharer.php";
-    facebookUrl += "?u=" + encodeURIComponent(location.href);
+    // dynamically set share link per video; via inline skin config
+    if(typeof this.props.skinConfig.extras !== 'undefined') {
+      facebookUrl += "?u=" + encodeURIComponent(this.props.skinConfig.extras.shareLink);
+    } else {
+      facebookUrl += "?u=" + encodeURIComponent(location.href);
+    }
     window.open(facebookUrl, "facebook window", "height=315,width=780");
   },
 
@@ -123,7 +128,12 @@ var SharePanel = React.createClass({
   handleTwitterClick: function() {
     var twitterUrl = "https://twitter.com/intent/tweet";
     twitterUrl += "?text=" + encodeURIComponent(this.props.contentTree.title+": ");
-    twitterUrl += "&url=" + encodeURIComponent(location.href);
+    // dynamically set share link per video; via inline skin config
+    if(typeof this.props.skinConfig.extras !== 'undefined') {
+      twitterUrl += "&url=" + encodeURIComponent(this.props.skinConfig.extras.shareLink);
+    } else {
+      twitterUrl += "&url=" + encodeURIComponent(location.href);
+    }
     window.open(twitterUrl, "twitter window", "height=300,width=750");
   },
 
