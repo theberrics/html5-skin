@@ -90,12 +90,26 @@ button.oo-close-button:hover {
 
 }
 /* =====================================
+ * ad screen
+ * ================================== */
+.oo-ad-screen {
+
+  .oo-play-pause {
+    display: none !important;
+  }
+
+}
+/* =====================================
  * ad screen panel
  * ================================== */
  .oo-ad-screen-panel {
 
     .oo-ad-playback-info {
         text-align: left !important;
+    }
+
+    .oo-ad-top-bar .oo-skip-button.oo-enabled {
+      display: none !important;
     }
 
  }

@@ -58,10 +58,10 @@ var AdPanel = React.createClass({
 
     // // Ad title
     var adTitle = "Unknown";
-    if (this.props.currentAdsInfo && 
-        this.props.currentAdsInfo.currentAdItem && 
-        this.props.contentTree && 
-        this.props.currentAdsInfo.currentAdItem.ooyalaAds && 
+    if (this.props.currentAdsInfo &&
+        this.props.currentAdsInfo.currentAdItem &&
+        this.props.contentTree &&
+        this.props.currentAdsInfo.currentAdItem.ooyalaAds &&
         this.props.contentTree.title) {
       adTitle = this.props.contentTree.title;
     } else {
@@ -77,9 +77,9 @@ var AdPanel = React.createClass({
     var adPlaybackInfo = Utils.getLocalizedString(this.props.language, CONSTANTS.SKIN_TEXT.AD, this.props.localizableStrings);
     var currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
     var totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
-    if (this.isValidAdPlaybackInfo(currentAdIndex) && this.isValidAdPlaybackInfo(totalNumberOfAds)) {
-      adPlaybackInfo = adPlaybackInfo + ": (" + currentAdIndex + "/" + totalNumberOfAds + ")";
-    }
+    // if (this.isValidAdPlaybackInfo(currentAdIndex) && this.isValidAdPlaybackInfo(totalNumberOfAds)) {
+    //   adPlaybackInfo = adPlaybackInfo + ": (" + currentAdIndex + "/" + totalNumberOfAds + ")";
+    // }
 
     var isLive = this.props.currentAdsInfo.currentAdItem.isLive;
 
