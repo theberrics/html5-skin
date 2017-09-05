@@ -532,7 +532,7 @@ var ControlBar = React.createClass({
   render: function() {
     var controlBarClass = ClassNames({
       "oo-control-bar": true,
-      "oo-control-bar-hidden": !this.props.controlBarVisible
+      "oo-control-bar-hidden": false // TODO-TEMP was !this.props.controlBarVisible
     });
 
     var controlBarItems = this.populateControlBar();
