@@ -413,7 +413,9 @@ var ControlBar = React.createClass({
         clickUrl={this.props.skinConfig.controlBar.logo.clickUrl}
         target={this.props.skinConfig.controlBar.logo.target}
         width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
-        height={this.props.skinConfig.controlBar.logo.height}/>
+        height={this.props.skinConfig.controlBar.logo.height}/>,
+
+      "frameByFrame": <div>F-by-F</div>
     };
 
     var controlBarItems = [];
