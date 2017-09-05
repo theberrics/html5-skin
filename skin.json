@@ -192,7 +192,7 @@
       {"name":"playPause", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45 },
       {"name":"live", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":45},
       {"name":"timeDuration", "location":"controlBar", "whenDoesNotFit":"drop", "minWidth":145 },
-      {"name":"frameByFrame", "location":"controlBar", "whenDoesNotFit":"drop", "minWidth":45 },
+      {"name":"advancedSeeking", "location":"controlBar", "whenDoesNotFit":"drop", "minWidth":45 },
       {"name":"flexibleSpace", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":1 },
       {"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":240 },
       {"name":"share", "location":"controlBar", "whenDoesNotFit":"moveToMoreOptions", "minWidth":45 },
