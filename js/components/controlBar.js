@@ -181,26 +181,27 @@ var ControlBar = React.createClass({
   },
 
   handleNextFrameClick: function() {
+    //console.log('next frame clicked!!!');
+
     // EXAMPLES
     //this.props.controller.state.playPauseButtonFocused = false;
     //this.props.controller.togglePlayPause();
-    alert('next frame clicked!!!');
   },
 
   handlePreviousFrameClick: function() {
-    alert('previous frame clicked!!!');
+    //console.log('previous frame clicked!!!');
   },
 
   handleSlowMoOneHalfClick: function() {
-    alert('slow mo 1/2 clicked!!!');
+    //console.log('slow mo 1/2 clicked!!!');
   },
 
   handleSlowMoOneThirdClick: function() {
-    alert('slow mo 1/3 clicked!!!');
+    //console.log('slow mo 1/3 clicked!!!');
   },
 
   handleSkipBackClick: function() {
-    alert('skip back clicked!!!');
+    //console.log('skip back clicked!!!');
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
