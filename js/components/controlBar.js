@@ -180,6 +180,29 @@ var ControlBar = React.createClass({
     this.props.controller.state.playPauseButtonFocused = false;
   },
 
+  handleNextFrameClick: function() {
+    // EXAMPLES
+    //this.props.controller.state.playPauseButtonFocused = false;
+    //this.props.controller.togglePlayPause();
+    alert('next frame clicked!!!');
+  },
+
+  handlePreviousFrameClick: function() {
+    alert('previous frame clicked!!!');
+  },
+
+  handleSlowMoOneHalfClick: function() {
+    alert('slow mo 1/2 clicked!!!');
+  },
+
+  handleSlowMoOneThirdClick: function() {
+    alert('slow mo 1/3 clicked!!!');
+  },
+
+  handleSkipBackClick: function() {
+    alert('skip back clicked!!!');
+  },
+
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
     var iconElement = Utils.getEventIconElement(evt);
@@ -417,15 +440,25 @@ var ControlBar = React.createClass({
 
       "advancedSeeking": <div className="oo-advanced-seeking oo-control-bar-item" key="advancedSeeking">
                           <div className="oo-frame-by-frame oo-control-bar-item">
-                            <button>≪</button>
-                            <button>≫</button>
+                            <button
+                              onClick={this.handlePreviousFrameClick}
+                            >≪</button>
+                            <button
+                              onClick={this.handleNextFrameClick}
+                            >≫</button>
                           </div>
                           <div className="oo-skip-back oo-control-bar-item">
-                            <button>↺</button>
+                            <button
+                              onClick={this.handleSkipBackClick}
+                            >↺</button>
                           </div>
                           <div className="oo-slow-mo oo-control-bar-item">
-                            <button>½</button>
-                            <button>⅓</button>
+                            <button
+                              onClick={this.handleSlowMoOneHalfClick}
+                            >½</button>
+                            <button
+                              onClick={this.handleSlowMoOneThirdClick}
+                            >⅓</button>
                           </div>
                         </div>
     };
