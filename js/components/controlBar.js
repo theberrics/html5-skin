@@ -416,9 +416,17 @@ var ControlBar = React.createClass({
         height={this.props.skinConfig.controlBar.logo.height}/>,
 
       "advancedSeeking": <div className="oo-advanced-seeking oo-control-bar-item" key="advancedSeeking">
-                          <div className="oo-frame-by-frame oo-control-bar-item">f</div>
-                          <div className="oo-skip-back oo-control-bar-item">s</div>
-                          <div className="oo-slow-mo oo-control-bar-item">m</div>
+                          <div className="oo-frame-by-frame oo-control-bar-item">
+                            <button>≪</button>
+                            <button>≫</button>
+                          </div>
+                          <div className="oo-skip-back oo-control-bar-item">
+                            <button>↺</button>
+                          </div>
+                          <div className="oo-slow-mo oo-control-bar-item">
+                            <button>½</button>
+                            <button>⅓</button>
+                          </div>
                         </div>
     };
 
