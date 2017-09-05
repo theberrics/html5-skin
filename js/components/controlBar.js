@@ -415,7 +415,9 @@ var ControlBar = React.createClass({
         width={this.props.responsiveView != this.props.skinConfig.responsive.breakpoints.xs.id ? this.props.skinConfig.controlBar.logo.width : null}
         height={this.props.skinConfig.controlBar.logo.height}/>,
 
-      "frameByFrame": <div>F-by-F</div>
+      "frameByFrame": <div className="oo-frame-by-frame oo-control-bar-item" key="frameByFrame">
+                        <div>F-by-F</div>
+                      </div>
     };
 
     var controlBarItems = [];
