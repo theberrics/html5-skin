@@ -202,6 +202,18 @@ var ControlBar = React.createClass({
 
   handleSkipBackClick: function() {
     //console.log('skip back clicked!!!');
+
+    var currentPlayheadTime = Math.floor(this.props.controller.skin.state.currentPlayhead);
+    var newPlayheadTime = currentPlayheadTime - 10;
+
+    // before 10 seconds, play from beginning
+    if (currentPlayheadTime <= 10) {
+      this.props.controller.seek(0);
+    }
+    // after 10 seconds AND before the end, go back 10 seconds
+    else if (currentPlayheadTime > 10 && currentPlayheadTime <= this.props.duration) {
+      this.props.controller.seek(newPlayheadTime);
+    }
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
