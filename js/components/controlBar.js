@@ -183,21 +183,56 @@ var ControlBar = React.createClass({
   handleNextFrameClick: function() {
     //console.log('next frame clicked!!!');
 
-    // EXAMPLES
-    //this.props.controller.state.playPauseButtonFocused = false;
-    //this.props.controller.togglePlayPause();
+    // 30 fps = 0.0333 (1 / 30)
+    // 29.97 fps = 0.0333 (1 / 29.97)
+    // 23.98 fps = 0.0417 (1 / 23.98)
+    this.props.controller.togglePlayPause();
+
+    const NEXT_FRAME_IN_SECONDS = 0.0333;
+    var currentPlayheadTime = this.props.controller.skin.state.currentPlayhead;
+    var newPlayheadTime = currentPlayheadTime + NEXT_FRAME_IN_SECONDS;
+
+    //if (!this.props.controller.state.buffering) {
+      this.props.controller.seek(newPlayheadTime);
+
+      var checkSeekComplete = setInterval(function() {
+        if (this.props.controller.skin.state.currentPlayhead >= newPlayheadTime) {
+          this.props.controller.togglePlayPause();
+          clearInterval(checkSeekComplete);
+        }
+      }.bind(this), .5);
+    //}
   },
 
   handlePreviousFrameClick: function() {
     //console.log('previous frame clicked!!!');
+
+    // 30 fps = 0.0333 (1 / 30)
+    // 29.97 fps = 0.0333 (1 / 29.97)
+    // 23.98 fps = 0.0417 (1 / 23.98)
+    this.props.controller.mb.publish(OO.EVENTS.PAUSE);
+
+    const PREVIOUS_FRAME_IN_SECONDS = 0.0333;
+    var currentPlayheadTime = this.props.controller.skin.state.currentPlayhead;
+    var newPlayheadTime = currentPlayheadTime - PREVIOUS_FRAME_IN_SECONDS;
+
+    //if (!this.props.controller.state.buffering) {
+      this.props.controller.seek(newPlayheadTime);
+
+      this.props.controller.mb.publish(OO.EVENTS.PAUSE);
+    //}
   },
 
   handleSlowMoOneHalfClick: function() {
     //console.log('slow mo 1/2 clicked!!!');
+
+
   },
 
   handleSlowMoOneThirdClick: function() {
     //console.log('slow mo 1/3 clicked!!!');
+
+
   },
 
   handleSkipBackClick: function() {

@@ -64,7 +64,7 @@
     "showTitle": false,
     "showDescription": false,
     "infoPanelPosition": "topLeft",
-    "screenToShowOnPause": "discovery"
+    "screenToShowOnPause": "pause"
   },
   "endScreen": {
     "screenToShowOnEnd": "discovery",
