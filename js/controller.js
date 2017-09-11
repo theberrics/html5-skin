@@ -1278,12 +1278,92 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
+    step: function(direction) {
+      var frameDuration = 1 / 24;
+      var seekTarget = getTimeForFrame(getFrameForTime(this.state.mainVideoPlayhead) + direction);
+
+      //this.mb.publish(OO.EVENTS.PAUSE);
+
+      this.stepSeek(seekTarget);
+
+      function getFrameForTime(time) {
+        return Math.round(Math.max(time - frameDuration, 0) / frameDuration);
+      }
+
+      function getTimeForFrame(frame) {
+        return (frame * frameDuration) + frameDuration;
+      }
+    },
+
+    stepSeek: function(time) {
+      var frameDuration = 1 / 24;
+      var smState = 0;
+      var wasPlaying = false;
+
+      var attachEventHandlers = function () {
+        this.mb.subscribe(OO.EVENTS.BUFFERING, 'stepSeekUi', SM);
+        this.mb.subscribe(OO.EVENTS.SEEK, 'stepSeekUi', SM);
+        this.mb.subscribe(OO.EVENTS.SEEKED, 'stepSeekUi', SM);
+      }.bind(this);
+
+      var detachEventHandlers = function () {
+        this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'stepSeekUi');
+        this.mb.unsubscribe(OO.EVENTS.SEEK, 'stepSeekUi');
+        this.mb.unsubscribe(OO.EVENTS.SEEKED, 'stepSeekUi');
+      }.bind(this);
+
+      var SM = function (event) {
+        console.log(event);
+        switch (smState) {
+          case 0:
+            if (event === 'seek') {
+              smState = 1;
+            } else if (event !== 'buffering') {
+              detachEventHandlers();
+            }
+            break;
+
+          case 1:
+            var isPlaying = (this.state.playerState === CONSTANTS.STATE.PLAYING) ? true : false;
+
+            if (event === 'buffering') {
+              wasPlaying = isPlaying;
+              this.mb.publish(OO.EVENTS.PAUSE);
+              smState = 2;
+            } else {
+              if (wasPlaying && !isPlaying) {
+                this.mb.publish(OO.EVENTS.PLAY);
+              }
+              detachEventHandlers();
+            }
+            break;
+
+          case 2:
+            if (event === 'seeked') {
+              console.log('CALLING this.seek in switch!!!');
+              this.seek(time + (frameDuration / 4));
+              smState = 1;
+            } else {
+              detachEventHandlers();
+            }
+            break;
+        }
+
+        console.log('smState: ', smState);
+      }.bind(this);
+
+      attachEventHandlers();
+
+      this.seek(time + (frameDuration / 4));
+    },
+
     seek: function(seconds) {
       if (this.state.playerState == CONSTANTS.STATE.END) {
         this.endSeeking();
         this.mb.publish(OO.EVENTS.REPLAY, seconds);
       }
       else {
+        console.log('seek to: ', seconds);
         this.mb.publish(OO.EVENTS.SEEK, seconds);
       }
     },
