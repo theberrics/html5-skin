@@ -1282,7 +1282,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var frameDuration = 1 / 24;
       var seekTarget = getTimeForFrame(getFrameForTime(this.state.mainVideoPlayhead) + direction);
 
-      //this.mb.publish(OO.EVENTS.PAUSE);
+      this.mb.publish(OO.EVENTS.PAUSE);
 
       this.stepSeek(seekTarget);
 
@@ -1340,7 +1340,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
           case 2:
             if (event === 'seeked') {
-              console.log('CALLING this.seek in switch!!!');
               this.seek(time + (frameDuration / 4));
               smState = 1;
             } else {
@@ -1348,8 +1347,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
             }
             break;
         }
-
-        console.log('smState: ', smState);
       }.bind(this);
 
       attachEventHandlers();
