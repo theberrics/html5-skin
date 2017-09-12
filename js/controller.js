@@ -141,7 +141,11 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
       "isFullWindow": false,
-      "autoPauseDisabled": false
+      "autoPauseDisabled": false,
+
+      "stepSeekTriggered": false,
+      "stepSeekTime": 0,
+      "wasPlaying": false,
     };
 
     this.init();
@@ -525,6 +529,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.renderSkin();
         }
       }
+      if (this.playingCallback) {
+        this.playingCallback();
+        this.playingCallback = null;
+      }
     },
 
     onPause: function(event, source, pauseReason) {
@@ -626,7 +634,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    onSeeked: function(event) {
+    onSeeked: function(event, currentTimeAfterSeeking) {
       this.state.seeking = false;
       if (this.state.queuedPlayheadUpdate) {
         OO.log("popping queued update");
@@ -638,6 +646,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.pauseAnimationDisabled = true;
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
+      }
+      if (this.seekedCallback) {
+        this.seekedCallback(currentTimeAfterSeeking);
+        this.seekedCallback = null;
       }
     },
 
@@ -664,6 +676,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.buffering === true) {
         this.state.buffering = false;
         this.renderSkin();
+      }
+      if (this.bufferedCallback) {
+        this.bufferedCallback();
+        this.bufferedCallback = null;
       }
     },
 
@@ -1279,12 +1295,43 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     step: function(direction) {
-      var frameDuration = 1 / 24;
-      var seekTarget = getTimeForFrame(getFrameForTime(this.state.mainVideoPlayhead) + direction);
+      var frameDuration = 1 / 29.97;
+      var callStepSeek = function() {
+        console.log('current position: ', this.state.mainVideoPlayhead);
+        //var seekTarget = getTimeForFrame(getFrameForTime(this.state.mainVideoPlayhead) + direction);
+        var seekTarget = this.state.mainVideoPlayhead + frameDuration;
+        this.stepSeek(seekTarget);
+      }.bind(this);
 
-      this.mb.publish(OO.EVENTS.PAUSE);
+      if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
+        this.mb.publish(OO.EVENTS.PAUSE);
+      } else if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
+        callStepSeek();
+      }
 
-      this.stepSeek(seekTarget);
+      this.pausedCallback = function() {
+        console.log('pausedCallback called!!!');
+        callStepSeek();
+      }.bind(this);
+
+      this.seekedCallback = function(currentTimeAfterSeeking) {
+        console.log('seekedCallback called!!!');
+        console.log('currentTimeAfterSeeking: ', currentTimeAfterSeeking);
+      }.bind(this);
+
+      this.bufferedCallback = function() {
+        //console.log('bufferedCallback called!!!');
+        if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
+          this.mb.publish(OO.EVENTS.PLAY);
+        }
+      }.bind(this);
+
+      this.playingCallback = function() {
+        //console.log('playingCallback called!!!');
+        if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
+          this.mb.publish(OO.EVENTS.PAUSE);
+        }
+      }.bind(this);
 
       function getFrameForTime(time) {
         return Math.round(Math.max(time - frameDuration, 0) / frameDuration);
@@ -1296,62 +1343,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     stepSeek: function(time) {
-      var frameDuration = 1 / 24;
-      var smState = 0;
-      var wasPlaying = false;
+      var frameDuration = 1 / 29.97;
+      var seekTo = time + (frameDuration / 3);
 
-      var attachEventHandlers = function () {
-        this.mb.subscribe(OO.EVENTS.BUFFERING, 'stepSeekUi', SM);
-        this.mb.subscribe(OO.EVENTS.SEEK, 'stepSeekUi', SM);
-        this.mb.subscribe(OO.EVENTS.SEEKED, 'stepSeekUi', SM);
-      }.bind(this);
-
-      var detachEventHandlers = function () {
-        this.mb.unsubscribe(OO.EVENTS.BUFFERING, 'stepSeekUi');
-        this.mb.unsubscribe(OO.EVENTS.SEEK, 'stepSeekUi');
-        this.mb.unsubscribe(OO.EVENTS.SEEKED, 'stepSeekUi');
-      }.bind(this);
-
-      var SM = function (event) {
-        console.log(event);
-        switch (smState) {
-          case 0:
-            if (event === 'seek') {
-              smState = 1;
-            } else if (event !== 'buffering') {
-              detachEventHandlers();
-            }
-            break;
-
-          case 1:
-            var isPlaying = (this.state.playerState === CONSTANTS.STATE.PLAYING) ? true : false;
-
-            if (event === 'buffering') {
-              wasPlaying = isPlaying;
-              this.mb.publish(OO.EVENTS.PAUSE);
-              smState = 2;
-            } else {
-              if (wasPlaying && !isPlaying) {
-                this.mb.publish(OO.EVENTS.PLAY);
-              }
-              detachEventHandlers();
-            }
-            break;
-
-          case 2:
-            if (event === 'seeked') {
-              this.seek(time + (frameDuration / 4));
-              smState = 1;
-            } else {
-              detachEventHandlers();
-            }
-            break;
-        }
-      }.bind(this);
-
-      attachEventHandlers();
-
-      this.seek(time + (frameDuration / 4));
+      if (!this.state.buffering) {
+        this.seek(seekTo);
+      }
     },
 
     seek: function(seconds) {
