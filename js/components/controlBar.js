@@ -20,6 +20,8 @@ var ControlBar = React.createClass({
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.volumeSliderValue = 0;
     this.moreOptionsItems = null;
+    this.slowMoOneHalfActive = false;
+    this.slowMoOneThirdActive = false;
 
     return {
       currentVolumeHead: 0
@@ -192,13 +194,13 @@ var ControlBar = React.createClass({
   handleSlowMoOneHalfClick: function() {
     //console.log('slow mo 1/2 clicked!!!');
 
-
+    this.props.controller.slowMo(0.5);
   },
 
   handleSlowMoOneThirdClick: function() {
     //console.log('slow mo 1/3 clicked!!!');
 
-
+    this.props.controller.slowMo(0.333);
   },
 
   handleSkipBackClick: function() {
