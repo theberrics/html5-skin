@@ -143,10 +143,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullWindow": false,
       "autoPauseDisabled": false,
 
-      "stepSeekTriggered": false,
-      "stepSeekTime": 0,
-      "wasPlaying": false,
+      "frameDuration": 1 / 29.97
     };
+
+    this.actualVideoObject = null;
 
     this.init();
   };
@@ -529,10 +529,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           this.renderSkin();
         }
       }
-      if (this.playingCallback) {
-        this.playingCallback();
-        this.playingCallback = null;
-      }
     },
 
     onPause: function(event, source, pauseReason) {
@@ -647,10 +643,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         this.state.playerState = CONSTANTS.STATE.PAUSE;
       }
-      if (this.seekedCallback) {
-        this.seekedCallback(currentTimeAfterSeeking);
-        this.seekedCallback = null;
-      }
     },
 
     onPlaybackReady: function(event) {
@@ -676,10 +668,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if (this.state.buffering === true) {
         this.state.buffering = false;
         this.renderSkin();
-      }
-      if (this.bufferedCallback) {
-        this.bufferedCallback();
-        this.bufferedCallback = null;
       }
     },
 
@@ -1295,11 +1283,16 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     step: function(direction) {
-      var frameDuration = 1 / 29.97;
+      var getFrameForTime = function(time) {
+        return Math.round(Math.max(time - this.state.frameDuration, 0) / this.state.frameDuration);
+      }.bind(this);
+
+      var getTimeForFrame = function(frame) {
+        return (frame * this.state.frameDuration) + this.state.frameDuration;
+      }.bind(this);
+
       var callStepSeek = function() {
-        console.log('current position: ', this.state.mainVideoPlayhead);
-        //var seekTarget = getTimeForFrame(getFrameForTime(this.state.mainVideoPlayhead) + direction);
-        var seekTarget = this.state.mainVideoPlayhead + frameDuration;
+        var seekTarget = getTimeForFrame(getFrameForTime(this.actualVideoObject.currentTime) + direction);
         this.stepSeek(seekTarget);
       }.bind(this);
 
@@ -1310,44 +1303,26 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
 
       this.pausedCallback = function() {
-        console.log('pausedCallback called!!!');
         callStepSeek();
       }.bind(this);
-
-      this.seekedCallback = function(currentTimeAfterSeeking) {
-        console.log('seekedCallback called!!!');
-        console.log('currentTimeAfterSeeking: ', currentTimeAfterSeeking);
-      }.bind(this);
-
-      this.bufferedCallback = function() {
-        //console.log('bufferedCallback called!!!');
-        if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
-          this.mb.publish(OO.EVENTS.PLAY);
-        }
-      }.bind(this);
-
-      this.playingCallback = function() {
-        //console.log('playingCallback called!!!');
-        if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
-          this.mb.publish(OO.EVENTS.PAUSE);
-        }
-      }.bind(this);
-
-      function getFrameForTime(time) {
-        return Math.round(Math.max(time - frameDuration, 0) / frameDuration);
-      }
-
-      function getTimeForFrame(frame) {
-        return (frame * frameDuration) + frameDuration;
-      }
     },
 
     stepSeek: function(time) {
-      var frameDuration = 1 / 29.97;
-      var seekTo = time + (frameDuration / 3);
+      var seekTo = time + (this.state.frameDuration / 4);
 
       if (!this.state.buffering) {
-        this.seek(seekTo);
+        //this.seek(seekTo); // was calling controller seek method
+        this.actualVideoObjectSeek(seekTo);
+      }
+    },
+
+    actualVideoObjectSeek: function(seconds) {
+      if (this.state.playerState == CONSTANTS.STATE.END) {
+        this.endSeeking();
+        this.mb.publish(OO.EVENTS.REPLAY, seconds);
+      }
+      else {
+        this.actualVideoObject.currentTime = seconds;
       }
     },
 
@@ -1357,7 +1332,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.mb.publish(OO.EVENTS.REPLAY, seconds);
       }
       else {
-        console.log('seek to: ', seconds);
         this.mb.publish(OO.EVENTS.SEEK, seconds);
       }
     },

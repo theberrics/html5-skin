@@ -28,6 +28,7 @@ var ControlBar = React.createClass({
 
   componentDidMount: function() {
     window.addEventListener('orientationchange', this.closePopovers);
+    this.props.controller.actualVideoObject = document.querySelector('video');
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -180,50 +181,12 @@ var ControlBar = React.createClass({
     this.props.controller.state.playPauseButtonFocused = false;
   },
 
-  handleNextFrameClick: function() {
-    //console.log('next frame clicked!!!');
-
-    var stepSize = 1;
-    this.props.controller.step(+(stepSize));
-
-    // 30 fps = 0.0333 (1 / 30)
-    // 29.97 fps = 0.0333 (1 / 29.97)
-    // 23.98 fps = 0.0417 (1 / 23.98)
-    // this.props.controller.togglePlayPause();
-    //
-    // const NEXT_FRAME_IN_SECONDS = 0.0333;
-    // var currentPlayheadTime = this.props.controller.skin.state.currentPlayhead;
-    // var newPlayheadTime = currentPlayheadTime + NEXT_FRAME_IN_SECONDS;
-
-    //if (!this.props.controller.state.buffering) {
-      // this.props.controller.seek(newPlayheadTime);
-      //
-      // var checkSeekComplete = setInterval(function() {
-      //   if (this.props.controller.skin.state.currentPlayhead >= newPlayheadTime) {
-      //     this.props.controller.togglePlayPause();
-      //     clearInterval(checkSeekComplete);
-      //   }
-      // }.bind(this), .5);
-    //}
+  handleStepForwardClick: function() {
+    this.props.controller.step(+1);
   },
 
-  handlePreviousFrameClick: function() {
-    //console.log('previous frame clicked!!!');
-
-    // 30 fps = 0.0333 (1 / 30)
-    // 29.97 fps = 0.0333 (1 / 29.97)
-    // 23.98 fps = 0.0417 (1 / 23.98)
-    // this.props.controller.mb.publish(OO.EVENTS.PAUSE);
-    //
-    // const PREVIOUS_FRAME_IN_SECONDS = 0.0333;
-    // var currentPlayheadTime = this.props.controller.skin.state.currentPlayhead;
-    // var newPlayheadTime = currentPlayheadTime - PREVIOUS_FRAME_IN_SECONDS;
-
-    //if (!this.props.controller.state.buffering) {
-      // this.props.controller.seek(newPlayheadTime);
-      //
-      // this.props.controller.mb.publish(OO.EVENTS.PAUSE);
-    //}
+  handleStepBackClick: function() {
+    this.props.controller.step(-1);
   },
 
   handleSlowMoOneHalfClick: function() {
@@ -239,17 +202,13 @@ var ControlBar = React.createClass({
   },
 
   handleSkipBackClick: function() {
-    //console.log('skip back clicked!!!');
-
     var currentPlayheadTime = Math.floor(this.props.controller.skin.state.currentPlayhead);
     var newPlayheadTime = currentPlayheadTime - 10;
 
-    // before 10 seconds, play from beginning
+    // if not event 10 seconds have passed, just play from beginning
     if (currentPlayheadTime <= 10) {
       this.props.controller.seek(0);
-    }
-    // after 10 seconds AND before the end, go back 10 seconds
-    else if (currentPlayheadTime > 10 && currentPlayheadTime <= this.props.duration) {
+    } else {
       this.props.controller.seek(newPlayheadTime);
     }
   },
@@ -492,10 +451,10 @@ var ControlBar = React.createClass({
       "advancedSeeking": <div className="oo-advanced-seeking oo-control-bar-item" key="advancedSeeking">
                           <div className="oo-frame-by-frame oo-control-bar-item">
                             <button
-                              onClick={this.handlePreviousFrameClick}
+                              onClick={this.handleStepBackClick}
                             >≪</button>
                             <button
-                              onClick={this.handleNextFrameClick}
+                              onClick={this.handleStepForwardClick}
                             >≫</button>
                           </div>
                           <div className="oo-skip-back oo-control-bar-item">
