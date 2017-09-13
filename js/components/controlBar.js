@@ -192,20 +192,18 @@ var ControlBar = React.createClass({
   },
 
   handleSlowMoOneHalfClick: function() {
-    //console.log('slow mo 1/2 clicked!!!');
-
     this.props.controller.slowMo(0.5);
   },
 
   handleSlowMoOneThirdClick: function() {
-    //console.log('slow mo 1/3 clicked!!!');
-
     this.props.controller.slowMo(0.333);
   },
 
   handleSkipBackClick: function() {
     var currentPlayheadTime = Math.floor(this.props.controller.skin.state.currentPlayhead);
     var newPlayheadTime = currentPlayheadTime - 10;
+
+    this.props.controller.actualVideoObject.playbackRate = 1;
 
     // if not event 10 seconds have passed, just play from beginning
     if (currentPlayheadTime <= 10) {

@@ -1256,10 +1256,6 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
     },
 
     togglePlayPause: function() {
-      if(this.actualVideoObject !== null) {
-        this.actualVideoObject.playbackRate = 1;
-      }
-
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           this.mb.publish(CONSTANTS.CUSTOM_EVENTS.INITIAL_PLAY_REQUESTED);
@@ -1278,6 +1274,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }
           break;
         case CONSTANTS.STATE.PAUSE:
+          if (this.actualVideoObject !== null) {
+            this.actualVideoObject.playbackRate = 1;
+          }
+          
           this.mb.publish(OO.EVENTS.PLAY);
           break;
         case CONSTANTS.STATE.PLAYING:
