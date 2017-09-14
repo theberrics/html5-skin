@@ -1273,9 +1273,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           }
           break;
         case CONSTANTS.STATE.PAUSE:
-          if (this.actualVideoObject !== null) {
-            this.actualVideoObject.playbackRate = 1;
-          }
+          // TODO per Paul, decouple ... waiting for Schultz input
+          // if (this.actualVideoObject !== null) {
+          //   this.actualVideoObject.playbackRate = 1;
+          // }
 
           this.mb.publish(OO.EVENTS.PLAY);
           break;
@@ -1289,11 +1290,12 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       var currentPlayheadTime = this.actualVideoObject.currentTime;
       var newPlayheadTime = currentPlayheadTime - time;
 
-      this.actualVideoObject.playbackRate = 1;
-
-      if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
-        this.mb.publish(OO.EVENTS.PLAY);
-      }
+      // TODO per Paul, decouple ... waiting for Schultz input
+      // this.actualVideoObject.playbackRate = 1;
+      //
+      // if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
+      //   this.mb.publish(OO.EVENTS.PLAY);
+      // }
 
       if (currentPlayheadTime <= time) {
         this.seek(0);
