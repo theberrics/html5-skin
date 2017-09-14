@@ -1,3 +1,19 @@
 .oo-advanced-seeking {
   display: flex;
+  button {
+    border: none;
+    background: none;
+    outline: 0;
+  }
+  .oo-control-bar-item {
+    padding: 0 !important;
+  }
+  .oo-control-bar-item.oo-slow-mo {
+    button:first-child {
+      padding-right: 3px;
+    }
+    button:last-child {
+      padding-left: 0;
+    }
+  }
 }
