@@ -1277,7 +1277,7 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
           if (this.actualVideoObject !== null) {
             this.actualVideoObject.playbackRate = 1;
           }
-          
+
           this.mb.publish(OO.EVENTS.PLAY);
           break;
         case CONSTANTS.STATE.PLAYING:
@@ -1286,7 +1286,30 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       }
     },
 
-    slowMo: function(rate) {
+    skipBack: function(time) {
+      var currentPlayheadTime = this.actualVideoObject.currentTime;
+      var newPlayheadTime = currentPlayheadTime - time;
+
+      this.actualVideoObject.playbackRate = 1;
+
+      if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
+        this.mb.publish(OO.EVENTS.PLAY);
+      }
+
+      if (currentPlayheadTime <= time) {
+        this.seek(0);
+      } else {
+        this.seek(newPlayheadTime);
+      }
+    },
+
+    slowMoOneHalf: function() {
+      var rate = this.actualVideoObject.playbackRate === 0.5 ? 1 : 0.5;
+      this.actualVideoObject.playbackRate = rate;
+    },
+
+    slowMoOneThird: function() {
+      var rate = this.actualVideoObject.playbackRate === 0.333 ? 1 : 0.333;
       this.actualVideoObject.playbackRate = rate;
     },
 
