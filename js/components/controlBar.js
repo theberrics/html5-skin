@@ -20,8 +20,6 @@ var ControlBar = React.createClass({
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.volumeSliderValue = 0;
     this.moreOptionsItems = null;
-    this.slowMoOneHalfActive = false;
-    this.slowMoOneThirdActive = false;
 
     return {
       currentVolumeHead: 0
@@ -30,6 +28,8 @@ var ControlBar = React.createClass({
 
   componentDidMount: function() {
     window.addEventListener('orientationchange', this.closePopovers);
+
+    // the selector should be more specific ... what if more than one video player
     this.props.controller.actualVideoObject = document.querySelector('video');
   },
 
@@ -579,7 +579,7 @@ var ControlBar = React.createClass({
   render: function() {
     var controlBarClass = ClassNames({
       "oo-control-bar": true,
-      "oo-control-bar-hidden": false // TODO-TEMP was !this.props.controlBarVisible
+      "oo-control-bar-hidden": !this.props.controlBarVisible // TODO-TEMP was !this.props.controlBarVisible
     });
 
     var controlBarItems = this.populateControlBar();
