@@ -395,11 +395,11 @@ var ControlBar = React.createClass({
 
       "flexibleSpace": <div className="oo-flexible-space oo-control-bar-flex-space" key="flexibleSpace"></div>,
 
-      "moreOptions": <a className="oo-more-options oo-control-bar-item"
-        onClick={this.handleMoreOptionsClick} key="moreOptions" aria-hidden="true">
-        <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
-          onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
-      </a>,
+      // "moreOptions": <a className="oo-more-options oo-control-bar-item"
+      //   onClick={this.handleMoreOptionsClick} key="moreOptions" aria-hidden="true">
+      //   <Icon {...this.props} icon="ellipsis" style={dynamicStyles.iconCharacter}
+      //     onMouseOver={this.highlight} onMouseOut={this.removeHighlight}/>
+      // </a>,
 
       "quality": (
         <div className="oo-popover-button-container" key="quality">
