@@ -340,11 +340,13 @@ var ControlBar = React.createClass({
 
     var slowMoOneHalfClass = ClassNames({
       "oo-slow-mo__button": true,
+      "oo-slow-mo__button--one-half": true,
       "oo-slow-mo__button--active": this.props.controller.state.slowMoOneHalfActive
     });
 
     var slowMoOneThirdClass = ClassNames({
       "oo-slow-mo__button": true,
+      "oo-slow-mo__button--one-third": true,
       "oo-slow-mo__button--active": this.props.controller.state.slowMoOneThirdActive
     });
 

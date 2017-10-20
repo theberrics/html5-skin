@@ -16,8 +16,55 @@
     button:last-child {
       padding-left: 0 !important;
     }
-    .oo-slow-mo__button--active svg g {
-      fill: #f00;
+    .oo-slow-mo__button {
+      display: inline-block;
+      position: relative;
     }
+    .oo-slow-mo__button--active:before {
+      background-color: #f00;
+      opacity: 1;
+      content: '';
+      display: block;
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      right: 0;
+      bottom: 7px;
+      border-radius: 50% 50%;
+      z-index: -1;
+      animation: glow .25s ease-in-out infinite alternate;
+    }
+    .oo-slow-mo__button--active:after {
+      font-size: 15px;
+      color: #fff;
+      content: '½';
+      display: block;
+      position: absolute;
+      text-shadow: -1px 1px 1px #000;
+      right: 0;
+      top: 0;
+      z-index: 2;
+    }
+    .oo-slow-mo__button--one-third.oo-slow-mo__button--active:after {
+      content: '⅓';
+    }
+  }
+}
+
+// @keyframes glow {
+//   from {
+//     box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
+//   }
+//   to {
+//     box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
+//   }
+// }
+
+@keyframes glow {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
