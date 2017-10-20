@@ -211,3 +211,21 @@ a.oo-volume-bar {
     opacity: 0;
   }
 }
+
+.oo-next-video__icon {
+  width: 15px;
+  height: 20px;
+  display: flex;
+  .oo-next-video__icon-arrow {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #fff;
+  }
+  .oo-next-video__icon-rect {
+    width: 3px;
+    height: 20px;
+    background-color: #fff;
+  }
+}

@@ -203,6 +203,10 @@ var ControlBar = React.createClass({
     this.props.controller.skipBack(10);
   },
 
+  handleNextVideoClick: function() {
+    console.log('next video requested!!!');
+  },
+
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
   highlight: function(evt) {
     var iconElement = Utils.getEventIconElement(evt);
@@ -366,6 +370,21 @@ var ControlBar = React.createClass({
         aria-label={playPauseAriaLabel}
         autoFocus={this.props.controller.state.playPauseButtonFocused}>
         <Icon {...this.props} icon={playIcon} style={dynamicStyles.iconCharacter} />
+      </button>,
+
+      "nextVideo":
+        <button
+          className="oo-next-video oo-control-bar-item"
+          onClick={this.handleNextVideoClick}
+          onMouseUp={this.blurOnMouseUp}
+          onMouseOver={this.highlight}
+          onMouseOut={this.removeHighlight}
+          key="nextVideo"
+          tabIndex="0">
+          <div className="oo-next-video__icon">
+            <div className="oo-next-video__icon-arrow" />
+            <div className="oo-next-video__icon-rect" />
+          </div>
       </button>,
 
       "live": <a className={liveClass}
