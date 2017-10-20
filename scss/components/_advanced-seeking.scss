@@ -32,7 +32,7 @@
       bottom: 7px;
       border-radius: 50% 50%;
       z-index: -1;
-      animation: glow .25s ease-in-out infinite alternate;
+      animation: glow .5s ease-in-out infinite alternate;
     }
     .oo-slow-mo__button--active:after {
       font-size: 15px;
@@ -45,20 +45,14 @@
       top: 0;
       z-index: 2;
     }
+    .oo-slow-mo__button--one-third.oo-slow-mo__button--active {
+      animation-duration: .3s;
+    }
     .oo-slow-mo__button--one-third.oo-slow-mo__button--active:after {
       content: '⅓';
     }
   }
 }
-
-// @keyframes glow {
-//   from {
-//     box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
-//   }
-//   to {
-//     box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de;
-//   }
-// }
 
 @keyframes glow {
   from {
