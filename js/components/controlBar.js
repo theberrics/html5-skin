@@ -20,6 +20,7 @@ var ControlBar = React.createClass({
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.volumeSliderValue = 0;
     this.moreOptionsItems = null;
+    this.mouseDownId = -1;
 
     return {
       currentVolumeHead: 0
@@ -189,6 +190,32 @@ var ControlBar = React.createClass({
 
   handleStepBackClick: function() {
     this.props.controller.step(-1);
+  },
+
+  handleStepForwardDown: function() {
+    // console.log('MOUSE DOWN FORWARD!!!');
+    // if (this.mouseDownId === -1) {
+    //   this.mouseDownId = setInterval(function() {
+    //     this.props.controller.step(+1);
+    //   }.bind(this), 100);
+    // }
+  },
+
+  handleStepForwardUp: function() {
+    // console.log('MOUSE UP FORWARD!!!');
+    // console.log(this.mouseDownId);
+    // clearInterval(this.mouseDownId);
+    // this.mouseDownId = -1;
+  },
+
+  handleStepBackDown: function() {
+    //console.log('MOUSE DOWN BACK!!!');
+    //this.props.controller.step(-1);
+  },
+
+  handleStepBackUp: function() {
+    //console.log('MOUSE UP BACK!!!');
+    //this.props.controller.step(-1);
   },
 
   handleSlowMoOneHalfClick: function() {
@@ -398,8 +425,8 @@ var ControlBar = React.createClass({
           className="oo-next-video oo-control-bar-item"
           onClick={this.handleNextVideoClick}
           onMouseUp={this.blurOnMouseUp}
-          onMouseOver={this.handleNextVideoMouseEnter}
-          onMouseOut={this.handleNextVideoMouseLeave}
+          onMouseEnter={this.handleNextVideoMouseEnter}
+          onMouseLeave={this.handleNextVideoMouseLeave}
           key="nextVideo"
           tabIndex="0">
           <div className="oo-next-video__icon">
@@ -494,6 +521,8 @@ var ControlBar = React.createClass({
                           <div className="oo-frame-by-frame oo-control-bar-item">
                             <button
                               onClick={this.handleStepBackClick}
+                              onMouseDown={this.handleStepBackDown}
+                              onMouseUp={this.handleStepBackUp}
                             >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
                               <g fill="#ffffff" fillRule="evenodd">
@@ -510,6 +539,8 @@ var ControlBar = React.createClass({
                             </button>
                             <button
                               onClick={this.handleStepForwardClick}
+                              onMouseDown={this.handleStepForwardDown}
+                              onMouseUp={this.handleStepForwardUp}
                             >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
                               <g fill="#ffffff" fillRule="evenodd">
