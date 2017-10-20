@@ -147,6 +147,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
 
       "slowMoOneHalfActive": false,
       "slowMoOneThirdActive": false,
+
+      "showUpNextPanel": false,
     };
 
     this.actualVideoObject = null;
@@ -1371,6 +1373,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       else {
         this.mb.publish(OO.EVENTS.SEEK, seconds);
       }
+    },
+
+    displayUpNextVideoPanel: function() {
+      this.state.showUpNextPanel = true;
+    },
+
+    hideUpNextVideoPanel: function() {
+      this.state.showUpNextPanel = false;
     },
 
     onLiveClick: function() {

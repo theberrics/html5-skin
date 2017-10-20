@@ -203,8 +203,29 @@ var ControlBar = React.createClass({
     this.props.controller.skipBack(10);
   },
 
-  handleNextVideoClick: function() {
-    console.log('next video requested!!!');
+  handleNextVideoClick: function(event) {
+    event.preventDefault();
+    //Use the same way as sending out the click event on discovery content
+    var eventData = {
+      "clickedVideo": this.props.controller.state.upNextInfo.upNextData,
+      "custom": {
+        "countdown": 0,
+        "autoplay": true
+      }
+    };
+    this.props.controller.sendDiscoveryClickEvent(eventData, false);
+  },
+
+  handleNextVideoMouseEnter: function(event) {
+    this.highlight(event);
+    event.preventDefault();
+    this.props.controller.displayUpNextVideoPanel();
+  },
+
+  handleNextVideoMouseLeave: function() {
+    this.removeHighlight(event);
+    event.preventDefault();
+    this.props.controller.hideUpNextVideoPanel();
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
@@ -377,8 +398,8 @@ var ControlBar = React.createClass({
           className="oo-next-video oo-control-bar-item"
           onClick={this.handleNextVideoClick}
           onMouseUp={this.blurOnMouseUp}
-          onMouseOver={this.highlight}
-          onMouseOut={this.removeHighlight}
+          onMouseOver={this.handleNextVideoMouseEnter}
+          onMouseOut={this.handleNextVideoMouseLeave}
           key="nextVideo"
           tabIndex="0">
           <div className="oo-next-video__icon">

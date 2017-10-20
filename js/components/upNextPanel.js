@@ -48,7 +48,9 @@ var UpNextPanel = React.createClass({
 
         <div className="oo-content-metadata">
           <div className="oo-up-next-title">
-            <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNext.timeToShow} currentPlayhead={this.props.currentPlayhead}/>
+            {this.props.showCountDown &&
+              <CountDownClock {...this.props} timeToShow={this.props.skinConfig.upNext.timeToShow} currentPlayhead={this.props.currentPlayhead}/>
+            }
 
             <div className="oo-up-next-title-text oo-text-truncate">
               {upNextString}: <span dangerouslySetInnerHTML={Utils.createMarkup(this.props.upNextInfo.upNextData.name)}></span>
@@ -78,7 +80,8 @@ UpNextPanel.propTypes = {
       timeToShow: React.PropTypes.number
     }),
     icons: React.PropTypes.objectOf(React.PropTypes.object)
-  })
+  }),
+  showCountDown: React.PropTypes.bool
 };
 
 UpNextPanel.defaultProps = {

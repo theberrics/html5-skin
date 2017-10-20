@@ -110,10 +110,11 @@ var PlayingScreen = React.createClass({
         showOverlay={this.props.controller.state.showAdOverlay}
         showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}/> : null;
 
-    var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData) ?
+    var upNextPanel = (this.props.controller.state.upNextInfo.showing && this.props.controller.state.upNextInfo.upNextData  || this.props.controller.state.showUpNextPanel && this.props.controller.state.upNextInfo.upNextData) ?
       <UpNextPanel {...this.props}
         controlBarVisible={this.state.controlBarVisible}
-        currentPlayhead={this.props.currentPlayhead}/> : null;
+        currentPlayhead={this.props.currentPlayhead}
+        showCountDown={!this.props.controller.state.showUpNextPanel ? true : false}/> : null;
 
     return (
     <div className="oo-state-screen oo-playing-screen"
