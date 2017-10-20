@@ -3,7 +3,7 @@
   button {
     border: none;
     background: none;
-    outline: 0;
+    outline: 0 !important;
     padding: 2px 6px 3px 6px !important;
   }
   .oo-control-bar-item {
@@ -15,6 +15,9 @@
     }
     button:last-child {
       padding-left: 0 !important;
+    }
+    .oo-slow-mo__button--active svg g {
+      fill: #f00;
     }
   }
 }

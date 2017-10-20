@@ -143,7 +143,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullWindow": false,
       "autoPauseDisabled": false,
 
-      "frameDuration": 1 / 29.97
+      "frameDuration": 1 / 29.97,
+
+      "slowMoOneHalfActive": false,
+      "slowMoOneThirdActive": false,
     };
 
     this.actualVideoObject = null;
@@ -431,6 +434,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.state.mainVideoPlayhead = currentPlayhead;
         this.state.mainVideoDuration = duration;
         this.state.mainVideoBuffered = buffered;
+        this.state.slowMoOneHalfActive = this.actualVideoObject.playbackRate === 0.5 ? true : false;
+        this.state.slowMoOneThirdActive = this.actualVideoObject.playbackRate === 0.333 ? true : false;
       }
       else if (videoId == OO.VIDEO.ADS) {
         //adVideoDuration is only used in adPanel ad marquee

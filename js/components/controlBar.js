@@ -338,6 +338,16 @@ var ControlBar = React.createClass({
       "oo-selected": this.props.controller.state.closedCaptionOptions.showClosedCaptionPopover
     });
 
+    var slowMoOneHalfClass = ClassNames({
+      "oo-slow-mo__button": true,
+      "oo-slow-mo__button--active": this.props.controller.state.slowMoOneHalfActive
+    });
+
+    var slowMoOneThirdClass = ClassNames({
+      "oo-slow-mo__button": true,
+      "oo-slow-mo__button--active": this.props.controller.state.slowMoOneThirdActive
+    });
+
     var selectedStyle = {};
     selectedStyle["color"] = this.props.skinConfig.general.accentColor ? this.props.skinConfig.general.accentColor : null;
 
@@ -443,74 +453,76 @@ var ControlBar = React.createClass({
                             <button
                               onClick={this.handleStepBackClick}
                             >
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-<g fill="#ffffff" fillRule="evenodd">
-<g transform="rotate(-180 9 9)">
-<path d="M0,12 L4,8 L0,12 Z"/>
-<polygon points=".01 0 0 .009 0 3.893 4.102 8 0 12.108 0 15.991 .01 16 8 8"/>
-</g>
-<g transform="rotate(-180 5 9)">
-<path d="M0,12 L4,8 L0,12 Z"/>
-<polygon points=".01 0 0 .009 0 3.893 4.102 8 0 12.108 0 15.991 .01 16 8 8"/>
-</g>
-</g>
-</svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                              <g fill="#ffffff" fillRule="evenodd">
+                                <g transform="rotate(-180 9 9)">
+                                  <path d="M0,12 L4,8 L0,12 Z"/>
+                                  <polygon points=".01 0 0 .009 0 3.893 4.102 8 0 12.108 0 15.991 .01 16 8 8"/>
+                                </g>
+                                <g transform="rotate(-180 5 9)">
+                                  <path d="M0,12 L4,8 L0,12 Z"/>
+                                  <polygon points=".01 0 0 .009 0 3.893 4.102 8 0 12.108 0 15.991 .01 16 8 8"/>
+                                </g>
+                              </g>
+                            </svg>
                             </button>
                             <button
                               onClick={this.handleStepForwardClick}
                             >
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-<g fill="#ffffff" fillRule="evenodd">
-<g transform="translate(10 2)">
-<path d="M0,12 L4,8 L0,12 Z"/>
-<polygon points=".01 0 0 .009 0 3.893 4.102 8 0 12.108 0 15.991 .01 16 8 8"/>
-</g>
-<g transform="translate(2 2)">
-<path d="M0,12 L4,8 L0,12 Z"/>
-<polygon points=".01 0 0 .009 0 3.893 4.102 8 0 12.108 0 15.991 .01 16 8 8"/>
-</g>
-</g>
-</svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                              <g fill="#ffffff" fillRule="evenodd">
+                                <g transform="translate(10 2)">
+                                  <path d="M0,12 L4,8 L0,12 Z"/>
+                                  <polygon points=".01 0 0 .009 0 3.893 4.102 8 0 12.108 0 15.991 .01 16 8 8"/>
+                                </g>
+                                <g transform="translate(2 2)">
+                                  <path d="M0,12 L4,8 L0,12 Z"/>
+                                  <polygon points=".01 0 0 .009 0 3.893 4.102 8 0 12.108 0 15.991 .01 16 8 8"/>
+                                </g>
+                              </g>
+                            </svg>
                             </button>
                           </div>
                           <div className="oo-skip-back oo-control-bar-item">
                             <button
                               onClick={this.handleSkipBackClick}
                             >
-<svg xmlns="http://www.w3.org/2000/svg" width="23" height="20" viewBox="0 0 23 20">
-<g fill="#ffffff" fillRule="evenodd">
-<g transform="rotate(90 9.5 10)">
-<path d="M5.15695577,13.4643646 C6.61685204,15.0247827 8.69453892,16 11,16 C15.418278,16 19,12.418278 19,8 C19,3.581722 15.418278,0 11,0 C6.581722,0 3,3.581722 3,8 C3,9.00559942 3.18553926,9.96786382 3.52425212,10.8544275 L5.13009451,9.24858515 C5.04484514,8.84582486 5,8.4281495 5,8 C5,4.6862915 7.6862915,2 11,2 C14.3137085,2 17,4.6862915 17,8 C17,11.3137085 14.3137085,14 11,14 C9.24681241,14 7.66924905,13.2480632 6.57222027,12.0491001 L5.15695577,13.4643646 Z"/>
-<path d="M2.57190958,7.36396103 L3.24185123e-14,7.36396103 L4,11.363961 L8,7.36396103 L5.42809042,7.36396103 L4,8.79205145 L2.57190958,7.36396103 Z"/>
-</g>
-<text fontFamily="ProximaNova-Bold, Proxima Nova" fontSize="7" fontWeight="bold">
-<tspan x="7.891" y="14">10</tspan>
-</text>
-</g>
-</svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="20" viewBox="0 0 23 20">
+                              <g fill="#ffffff" fillRule="evenodd">
+                                <g transform="rotate(90 9.5 10)">
+                                  <path d="M5.15695577,13.4643646 C6.61685204,15.0247827 8.69453892,16 11,16 C15.418278,16 19,12.418278 19,8 C19,3.581722 15.418278,0 11,0 C6.581722,0 3,3.581722 3,8 C3,9.00559942 3.18553926,9.96786382 3.52425212,10.8544275 L5.13009451,9.24858515 C5.04484514,8.84582486 5,8.4281495 5,8 C5,4.6862915 7.6862915,2 11,2 C14.3137085,2 17,4.6862915 17,8 C17,11.3137085 14.3137085,14 11,14 C9.24681241,14 7.66924905,13.2480632 6.57222027,12.0491001 L5.15695577,13.4643646 Z"/>
+                                  <path d="M2.57190958,7.36396103 L3.24185123e-14,7.36396103 L4,11.363961 L8,7.36396103 L5.42809042,7.36396103 L4,8.79205145 L2.57190958,7.36396103 Z"/>
+                                </g>
+                                <text fontFamily="ProximaNova-Bold, Proxima Nova" fontSize="7" fontWeight="bold">
+                                  <tspan x="7.891" y="14">10</tspan>
+                                </text>
+                              </g>
+                            </svg>
                             </button>
                           </div>
                           <div className="oo-slow-mo oo-control-bar-item">
                             <button
+                              className={slowMoOneHalfClass}
                               onClick={this.handleSlowMoOneHalfClick}
                             >
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-<g fill="#ffffff" fillRule="evenodd">
-<path fillRule="nonzero" d="M16.3540376,8.89816107 L17.3666646,9.57003893 L17.3670216,10.4595393 L16.3549343,11.1328606 L6,4.2623638 L6,3.26676196 L6.83183724,2.58018312 L7.50053074,3.02386111 L7.50053074,17.0235167 L6.83040069,17.4693407 L6,16.7847663 L6,15.7864935 L16.3540376,8.89816107 Z M6,18.0217896 L6,2.02825928 L18.0362549,10.0143119 L6,18.0217896 Z"/>
-<rect width="2" height="16" x="2" y="2"/>
-</g>
-</svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                              <g fill="#ffffff" fillRule="evenodd">
+                                <path fillRule="nonzero" d="M16.3540376,8.89816107 L17.3666646,9.57003893 L17.3670216,10.4595393 L16.3549343,11.1328606 L6,4.2623638 L6,3.26676196 L6.83183724,2.58018312 L7.50053074,3.02386111 L7.50053074,17.0235167 L6.83040069,17.4693407 L6,16.7847663 L6,15.7864935 L16.3540376,8.89816107 Z M6,18.0217896 L6,2.02825928 L18.0362549,10.0143119 L6,18.0217896 Z"/>
+                                <rect width="2" height="16" x="2" y="2"/>
+                              </g>
+                            </svg>
                             </button>
                             <button
+                              className={slowMoOneThirdClass}
                               onClick={this.handleSlowMoOneThirdClick}
                             >
-<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-<g fill="#ffffff" fillRule="evenodd">
-<path fillRule="nonzero" d="M16.6528124,8.89816107 L17.485589,9.57003893 L17.4858826,10.4595393 L16.6535498,11.1328606 L8.13773191,4.2623638 L8.13773191,3.26676196 L8.82182843,2.58018312 L9.37175679,3.02386111 L9.37175679,17.0235167 L8.82064702,17.4693407 L8.13773191,16.7847663 L8.13773191,15.7864935 L16.6528124,8.89816107 Z M8.13773191,18.0217896 L8.13773191,2.02825928 L18.0362549,10.0143119 L8.13773191,18.0217896 Z"/>
-<rect width="2" height="16" x="5" y="2"/>
-<rect width="2" height="16" x="2" y="2"/>
-</g>
-</svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                              <g fill="#ffffff" fillRule="evenodd">
+                                <path fillRule="nonzero" d="M16.6528124,8.89816107 L17.485589,9.57003893 L17.4858826,10.4595393 L16.6535498,11.1328606 L8.13773191,4.2623638 L8.13773191,3.26676196 L8.82182843,2.58018312 L9.37175679,3.02386111 L9.37175679,17.0235167 L8.82064702,17.4693407 L8.13773191,16.7847663 L8.13773191,15.7864935 L16.6528124,8.89816107 Z M8.13773191,18.0217896 L8.13773191,2.02825928 L18.0362549,10.0143119 L8.13773191,18.0217896 Z"/>
+                                <rect width="2" height="16" x="5" y="2"/>
+                                <rect width="2" height="16" x="2" y="2"/>
+                              </g>
+                            </svg>
                             </button>
                           </div>
                         </div>
